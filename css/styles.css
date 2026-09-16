@@ -267,6 +267,30 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-logo-img {
+  height: 56px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  display: block;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.brand-logo:hover .brand-logo-img {
+  transform: scale(1.03);
+}
+
+.site-header.scrolled .brand-logo-img {
+  height: 46px;
+}
+
+.brand-logo-img-footer {
+  height: 64px;
+  max-width: 240px;
+  filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.08));
 }
 
 .brand-symbol {
@@ -1183,8 +1207,77 @@ h1, h2, h3, h4, h5, h6 {
   color: #94A3B8;
   font-size: 0.92rem;
   line-height: 1.7;
-  margin: 1.25rem 0 1.75rem;
+  margin: 1.25rem 0 1.5rem;
   max-width: 340px;
+}
+
+.footer-social {
+  margin-top: 1.25rem;
+}
+
+.footer-social-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  margin-bottom: 0.75rem;
+}
+
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #E2E8F0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.social-btn svg {
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.social-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.social-btn-instagram:hover {
+  border-color: #E1306C;
+  background: rgba(225, 48, 108, 0.15);
+  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
+}
+
+.social-btn-facebook:hover {
+  border-color: #1877F2;
+  background: rgba(24, 119, 242, 0.15);
+  box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
+}
+
+.social-btn-linkedin:hover {
+  border-color: #0A66C2;
+  background: rgba(10, 102, 194, 0.15);
+  box-shadow: 0 4px 15px rgba(10, 102, 194, 0.3);
 }
 
 .footer-heading {

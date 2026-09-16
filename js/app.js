@@ -347,7 +347,7 @@ function initContactForm() {
       }
 
       // Simulación de envío exitoso
-      showToast(`Gracias ${name}. Tu consulta sobre ${type} ha sido enviada al equipo de EMEA.`);
+      showToast(`Gracias ${name}. Tu consulta sobre ${type} ha sido enviada al equipo de Manestar + Avila.`);
       contactForm.reset();
     });
   }
@@ -355,8 +355,8 @@ function initContactForm() {
   if (whatsappBtn) {
     whatsappBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      const phone = "5491149208800"; // Número ficticio profesional
-      const text = encodeURIComponent("Hola EMEA Arquitectura. Me pongo en contacto desde su sitio web para consultar por un proyecto.");
+      const phone = "5493516652493"; // Número oficial Manestar + Avila
+      const text = encodeURIComponent("Hola Manestar + Avila Arquitectura. Me pongo en contacto desde su sitio web para consultar por un proyecto.");
       window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     });
   }
