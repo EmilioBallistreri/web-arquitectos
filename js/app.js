@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initProjectModals();
   initAdminModal();
   initContactForm();
+  initLightbox();
 });
 
 /* ==========================================================================
@@ -175,18 +176,25 @@ function openProjectDetail(id) {
     { label: "Tipología", value: proj.categoryLabel || proj.category }
   ];
 
-  const galleryImages = (proj.details && proj.details.gallery && proj.details.gallery.length > 0)
+  const rawGallery = (proj.details && proj.details.gallery && proj.details.gallery.length > 0)
     ? proj.details.gallery
     : [proj.image];
 
+  // Consolidar lista completa de imágenes únicas (con la imagen principal primero)
+  const allModalImages = Array.from(new Set([proj.image, ...rawGallery]));
+
   modalBody.innerHTML = `
-    <div class="project-modal-hero">
+    <div class="project-modal-hero" id="projectHeroTrigger" title="Haz clic para ampliar la imagen en alta resolución">
       <img id="mainDetailImage" src="${proj.image}" alt="${escapeHtml(proj.title)}">
+      <div class="hero-zoom-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+        <span>Ampliar imagen</span>
+      </div>
     </div>
     <div class="project-modal-content">
       <div class="modal-tag-row">
         <span class="section-tag">${proj.categoryLabel || proj.category}</span>
-        <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">ID: ${proj.id}</span>
+        <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em;">ID: ${proj.id}</span>
       </div>
       <h2 class="project-modal-title">${escapeHtml(proj.title)}</h2>
       
@@ -213,12 +221,24 @@ function openProjectDetail(id) {
           <p>${escapeHtml(proj.details.challenges)}</p>
         ` : ''}
 
-        ${galleryImages.length > 1 ? `
-          <h4>Galería del Proyecto</h4>
+        ${allModalImages.length > 0 ? `
+          <div class="gallery-header">
+            <h4>Galería del Proyecto</h4>
+            <span class="gallery-hint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              Haz clic en cualquier imagen para ampliarla
+            </span>
+          </div>
           <div class="project-gallery-thumbs">
-            ${galleryImages.map((imgUrl, i) => `
-              <div class="thumb-img" onclick="document.getElementById('mainDetailImage').src='${imgUrl}'">
-                <img src="${imgUrl}" alt="Vista ${i+1}">
+            ${allModalImages.map((imgUrl, i) => `
+              <div class="thumb-img" data-gallery-idx="${i}" title="Ampliar imagen ${i + 1} en alta resolución">
+                <img src="${imgUrl}" alt="Vista ${i + 1} de ${escapeHtml(proj.title)}">
+                <div class="thumb-overlay">
+                  <span class="thumb-overlay-badge">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    Ampliar
+                  </span>
+                </div>
               </div>
             `).join('')}
           </div>
@@ -232,6 +252,33 @@ function openProjectDetail(id) {
       </div>
     </div>
   `;
+
+  // Listeners para ampliar imagen principal y galería
+  const heroTrigger = modalBody.querySelector('#projectHeroTrigger');
+  if (heroTrigger) {
+    heroTrigger.addEventListener('click', () => {
+      const mainImg = document.getElementById('mainDetailImage');
+      const currentSrc = mainImg ? mainImg.src : proj.image;
+      const idx = Math.max(0, allModalImages.findIndex(src => currentSrc.includes(src) || src.includes(currentSrc)));
+      if (typeof window.openLightbox === 'function') {
+        window.openLightbox(allModalImages, idx, proj.title);
+      }
+    });
+  }
+
+  const thumbEls = modalBody.querySelectorAll('.thumb-img');
+  thumbEls.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const idx = parseInt(thumb.getAttribute('data-gallery-idx'), 10) || 0;
+      const mainImg = document.getElementById('mainDetailImage');
+      if (mainImg && allModalImages[idx]) {
+        mainImg.src = allModalImages[idx];
+      }
+      if (typeof window.openLightbox === 'function') {
+        window.openLightbox(allModalImages, idx, proj.title);
+      }
+    });
+  });
 
   modalBackdrop.classList.add('active');
 }
@@ -360,6 +407,109 @@ function initContactForm() {
       window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     });
   }
+}
+
+/* ==========================================================================
+   5. VISOR DE IMÁGENES / LIGHTBOX (AMPLIAR FOTOS EN ALTA RESOLUCIÓN)
+   ========================================================================== */
+let activeLightboxImages = [];
+let currentLightboxIndex = 0;
+let currentLightboxTitle = '';
+
+function initLightbox() {
+  const backdrop = document.getElementById('imageLightboxModal');
+  const closeBtn = document.getElementById('closeLightbox');
+  const prevBtn = document.getElementById('lightboxPrevBtn');
+  const nextBtn = document.getElementById('lightboxNextBtn');
+  const imgEl = document.getElementById('lightboxImage');
+  const captionEl = document.getElementById('lightboxCaption');
+  const counterEl = document.getElementById('lightboxCounter');
+
+  if (!backdrop) return;
+
+  function closeLightbox() {
+    backdrop.classList.remove('active');
+    backdrop.setAttribute('aria-hidden', 'true');
+  }
+
+  function showImage(idx) {
+    if (!activeLightboxImages || activeLightboxImages.length === 0) return;
+    if (idx < 0) idx = activeLightboxImages.length - 1;
+    if (idx >= activeLightboxImages.length) idx = 0;
+    currentLightboxIndex = idx;
+
+    const imgUrl = activeLightboxImages[currentLightboxIndex];
+    if (imgEl) {
+      imgEl.style.opacity = '0';
+      imgEl.src = imgUrl;
+      imgEl.onload = () => {
+        imgEl.style.opacity = '1';
+      };
+    }
+
+    if (captionEl) {
+      captionEl.textContent = `${currentLightboxTitle} — Vista ${currentLightboxIndex + 1}`;
+    }
+    if (counterEl) {
+      counterEl.textContent = `${currentLightboxIndex + 1} / ${activeLightboxImages.length}`;
+    }
+
+    if (prevBtn && nextBtn) {
+      const showNav = activeLightboxImages.length > 1;
+      prevBtn.style.display = showNav ? 'flex' : 'none';
+      nextBtn.style.display = showNav ? 'flex' : 'none';
+    }
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentLightboxIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentLightboxIndex + 1);
+    });
+  }
+
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop || e.target.id === 'lightboxDialog') {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!backdrop.classList.contains('active')) return;
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      showImage(currentLightboxIndex - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      showImage(currentLightboxIndex + 1);
+    }
+  });
+
+  window.openLightbox = function(images, startIndex, title) {
+    if (!images || images.length === 0) return;
+    activeLightboxImages = images;
+    currentLightboxTitle = title || 'Proyecto';
+    backdrop.classList.add('active');
+    backdrop.setAttribute('aria-hidden', 'false');
+    showImage(startIndex || 0);
+  };
 }
 
 /* ==========================================================================
