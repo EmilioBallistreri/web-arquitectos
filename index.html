@@ -13,10 +13,10 @@
   <meta name="keywords" content="arquitectura hospitalaria, diseño de clínicas, arquitectura sanitaria, arquitectura habitacional, Manestar Avila, bioseguridad hospitalaria, proyectos BIM">
   <meta name="author" content="Manestar + Avila Arquitectura">
 
-  <!-- Google Fonts: Syne (Headings) & Plus Jakarta Sans (Body) & Space Mono (Technical Data) -->
+  <!-- Google Fonts: Syne (Headings) & Plus Jakarta Sans (Body, Data, Numbers) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/styles.css">
@@ -137,19 +137,6 @@
           <p>
             Trabajamos con metodología <strong>BIM (Building Information Modeling)</strong> integral desde la concepción del máster plan hasta el comisionamiento de quirófanos y áreas críticas, garantizando cero interferencias electromecánicas y optimización de costos operativos.
           </p>
-
-          <div class="about-pillars">
-            <div class="pillar-item">
-              <div class="pillar-num">01 / SALUD</div>
-              <h4>Flujos Asépticos</h4>
-              <p>Segregación estricta de circulaciones limpias, sucias, médicas y públicas.</p>
-            </div>
-            <div class="pillar-item">
-              <div class="pillar-num">02 / CONFORT</div>
-              <h4>Biofilia & Confort</h4>
-              <p>Luz natural, confort térmico pasivo y materialidades sustentables no porosas.</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -489,7 +476,7 @@
 
       <div class="footer-bottom">
         <p>&copy; 2026 Manestar + Avila Arquitectura. Todos los derechos reservados.</p>
-        <p style="font-family: var(--font-mono); font-size: 0.78rem;">Diseño y Código Arquitectónico Limpio</p>
+        <p style="font-size: 0.78rem;">Diseño y Código Arquitectónico Limpio</p>
       </div>
     </div>
   </footer>
@@ -504,6 +491,28 @@
       </button>
       <div id="projectModalBody">
         <!-- Contenido inyectado dinámicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL VISOR DE IMÁGENES / LIGHTBOX (AMPLIAR FOTOS EN ALTA RESOLUCIÓN)
+       ========================================================================== -->
+  <div class="lightbox-backdrop" id="imageLightboxModal" aria-hidden="true" role="dialog">
+    <button class="lightbox-close-btn" id="closeLightbox" aria-label="Cerrar vista ampliada">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <button class="lightbox-nav-btn lightbox-prev-btn" id="lightboxPrevBtn" aria-label="Imagen anterior">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="lightbox-nav-btn lightbox-next-btn" id="lightboxNextBtn" aria-label="Imagen siguiente">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="lightbox-dialog" id="lightboxDialog">
+      <img id="lightboxImage" src="" alt="Vista ampliada de la obra" class="lightbox-image">
+      <div class="lightbox-footer">
+        <span id="lightboxCaption" class="lightbox-caption"></span>
+        <span id="lightboxCounter" class="lightbox-counter"></span>
       </div>
     </div>
   </div>
