@@ -551,41 +551,50 @@ function escapeHtml(text) {
 /* ==========================================================================
    7. PORTADA DE FOTOS CON SELECCIÓN ALEATORIA & ROTACIÓN
    ========================================================================== */
+const COVER_ROTATION_MS = 7500;
+
 const COVER_PHOTOS = [
   {
     url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=85",
     title: "Centro de Oncología y Terapia Avanzada San Lucas",
-    tag: "Infraestructura Sanitaria de Alta Complejidad"
+    tag: "Infraestructura Sanitaria de Alta Complejidad",
+    sub: "Quirófanos Híbridos & Salas Limpias ISO 5 — Córdoba"
   },
   {
     url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=85",
     title: "Residencia Loma Alta — Hormigón Visto y Luz Cenital",
-    tag: "Arquitectura Habitacional Contemporánea"
+    tag: "Arquitectura Habitacional Contemporánea",
+    sub: "Vivienda Unifamiliar Sustentable — Sierras Chicas"
   },
   {
     url: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1920&q=85",
     title: "Bloque Quirúrgico de Flujo Laminar e ISO 5",
-    tag: "Bioseguridad & Quirófanos Inteligentes"
+    tag: "Bioseguridad & Quirófanos Inteligentes",
+    sub: "Clínica Privada Modelo — Presión Diferencial Positiva"
   },
   {
     url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85",
     title: "Complejo Residencial Bosque Serena",
-    tag: "Viviendas Biofílicas Sustentables"
+    tag: "Viviendas Biofílicas Sustentables",
+    sub: "Desarrollo Habitacional Integrado con la Naturaleza"
   },
   {
     url: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1920&q=85",
     title: "Clínica Materno-Infantil Los Álamos",
-    tag: "Sanidad Pediátrica y Humanización"
+    tag: "Sanidad Pediátrica y Humanización",
+    sub: "Arquitectura Terapéutica & Patios de Luz — 3.200 m²"
   },
   {
     url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=85",
     title: "Casa Prismática — Diálogo con el Paisaje Serrano",
-    tag: "Arquitectura Residencial de Vanguardia"
+    tag: "Arquitectura Residencial de Vanguardia",
+    sub: "Estructuras Voladizas & Acristalamiento Solar Pasivo"
   },
   {
     url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1920&q=85",
     title: "Desarrollo Habitacional Colectivo & Terrazas Verdes",
-    tag: "Arquitectura Multifamiliar Biofílica"
+    tag: "Arquitectura Multifamiliar Biofílica",
+    sub: "Eficiencia Energética & Espacios de Co-Living"
   }
 ];
 
@@ -595,7 +604,11 @@ let coverAutoTimer = null;
 function initPhotoCover() {
   const bgEl = document.getElementById('photoCoverBg');
   const captionEl = document.getElementById('coverPhotoCaption');
+  const subEl = document.getElementById('coverPhotoSub');
   const tagEl = document.getElementById('coverPhotoTag');
+  const currentNumEl = document.getElementById('coverCurrentNum');
+  const totalNumEl = document.getElementById('coverTotalNum');
+  const progressFill = document.getElementById('coverProgressFill');
   const indicatorsContainer = document.getElementById('coverIndicators');
   const prevBtn = document.getElementById('coverPrevBtn');
   const nextBtn = document.getElementById('coverNextBtn');
@@ -603,7 +616,11 @@ function initPhotoCover() {
 
   if (!bgEl) return;
 
-  // Renderizar indicadores interactivos
+  if (totalNumEl) {
+    totalNumEl.textContent = String(COVER_PHOTOS.length).padStart(2, '0');
+  }
+
+  // Renderizar indicadores interactivos si el contenedor existe
   if (indicatorsContainer) {
     indicatorsContainer.innerHTML = COVER_PHOTOS.map((_, i) => `
       <span class="cover-dot" data-idx="${i}" title="Ver fotografía ${i + 1}"></span>
@@ -625,7 +642,18 @@ function initPhotoCover() {
 
     const photo = COVER_PHOTOS[currentCoverIdx];
 
-    bgEl.style.opacity = '0.3';
+    // Actualizar Contador editorial (ej: 01 / 07)
+    if (currentNumEl) {
+      currentNumEl.textContent = String(currentCoverIdx + 1).padStart(2, '0');
+    }
+
+    // Actualizar textos y metadatos de la obra
+    if (captionEl) captionEl.textContent = photo.title;
+    if (tagEl) tagEl.textContent = photo.tag;
+    if (subEl) subEl.textContent = photo.sub || photo.tag;
+
+    // Transición suave de fondo con efecto zoom cinematográfico continuo
+    bgEl.style.opacity = '0.35';
     bgEl.classList.remove('zoom-effect');
 
     const tempImg = new Image();
@@ -636,9 +664,16 @@ function initPhotoCover() {
       bgEl.classList.add('zoom-effect');
     };
 
-    if (captionEl) captionEl.textContent = photo.title;
-    if (tagEl) tagEl.textContent = photo.tag;
+    // Actualizar barra de progreso lineal de auto-rotación
+    if (progressFill) {
+      progressFill.style.transition = 'none';
+      progressFill.style.width = '0%';
+      void progressFill.offsetWidth; // Forzar reflow del DOM
+      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
+      progressFill.style.width = '100%';
+    }
 
+    // Actualizar dots si existen
     if (indicatorsContainer) {
       indicatorsContainer.querySelectorAll('.cover-dot').forEach((dot, i) => {
         if (i === currentCoverIdx) {
@@ -664,6 +699,18 @@ function initPhotoCover() {
       nextIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
     } while (nextIdx === currentCoverIdx && COVER_PHOTOS.length > 1);
     setCoverPhoto(nextIdx);
+
+    // Micro-animación en el icono de shuffle
+    if (randomBtn) {
+      const svg = randomBtn.querySelector('svg');
+      if (svg) {
+        svg.style.transition = 'transform 0.4s ease';
+        svg.style.transform = 'rotate(180deg)';
+        setTimeout(() => {
+          svg.style.transform = '';
+        }, 400);
+      }
+    }
   }
 
   if (prevBtn) {
@@ -691,9 +738,16 @@ function initPhotoCover() {
   }
 
   function startCoverTimer() {
+    if (progressFill) {
+      progressFill.style.transition = 'none';
+      progressFill.style.width = '0%';
+      void progressFill.offsetWidth;
+      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
+      progressFill.style.width = '100%';
+    }
     coverAutoTimer = setInterval(() => {
       nextCoverPhoto();
-    }, 7500);
+    }, COVER_ROTATION_MS);
   }
 
   function restartCoverTimer() {
@@ -701,7 +755,7 @@ function initPhotoCover() {
     startCoverTimer();
   }
 
-  // Seleccionar foto aleatoria al cargar la web
+  // 1. Seleccionar FOTO ALEATORIA (Random) al entrar a la web
   const initialRandomIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
   setCoverPhoto(initialRandomIdx);
   startCoverTimer();
