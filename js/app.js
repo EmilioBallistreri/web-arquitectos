@@ -28,9 +28,12 @@ function saveProjects(projects) {
 // Inicialización del DOM
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
+  initPhotoCover();
   initPortfolio();
   initProjectModals();
+  initLineamientosZoom();
   initAdminModal();
+  initSecretAdmin();
   initContactForm();
   initLightbox();
 });
@@ -543,4 +546,316 @@ function escapeHtml(text) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+/* ==========================================================================
+   7. PORTADA DE FOTOS CON SELECCIÓN ALEATORIA & ROTACIÓN
+   ========================================================================== */
+const COVER_PHOTOS = [
+  {
+    url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=85",
+    title: "Centro de Oncología y Terapia Avanzada San Lucas",
+    tag: "Infraestructura Sanitaria de Alta Complejidad"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=85",
+    title: "Residencia Loma Alta — Hormigón Visto y Luz Cenital",
+    tag: "Arquitectura Habitacional Contemporánea"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1920&q=85",
+    title: "Bloque Quirúrgico de Flujo Laminar e ISO 5",
+    tag: "Bioseguridad & Quirófanos Inteligentes"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85",
+    title: "Complejo Residencial Bosque Serena",
+    tag: "Viviendas Biofílicas Sustentables"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1920&q=85",
+    title: "Clínica Materno-Infantil Los Álamos",
+    tag: "Sanidad Pediátrica y Humanización"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=85",
+    title: "Casa Prismática — Diálogo con el Paisaje Serrano",
+    tag: "Arquitectura Residencial de Vanguardia"
+  },
+  {
+    url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1920&q=85",
+    title: "Desarrollo Habitacional Colectivo & Terrazas Verdes",
+    tag: "Arquitectura Multifamiliar Biofílica"
+  }
+];
+
+let currentCoverIdx = 0;
+let coverAutoTimer = null;
+
+function initPhotoCover() {
+  const bgEl = document.getElementById('photoCoverBg');
+  const captionEl = document.getElementById('coverPhotoCaption');
+  const tagEl = document.getElementById('coverPhotoTag');
+  const indicatorsContainer = document.getElementById('coverIndicators');
+  const prevBtn = document.getElementById('coverPrevBtn');
+  const nextBtn = document.getElementById('coverNextBtn');
+  const randomBtn = document.getElementById('coverRandomBtn');
+
+  if (!bgEl) return;
+
+  // Renderizar indicadores interactivos
+  if (indicatorsContainer) {
+    indicatorsContainer.innerHTML = COVER_PHOTOS.map((_, i) => `
+      <span class="cover-dot" data-idx="${i}" title="Ver fotografía ${i + 1}"></span>
+    `).join('');
+
+    indicatorsContainer.querySelectorAll('.cover-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.dataset.idx, 10);
+        setCoverPhoto(idx);
+        restartCoverTimer();
+      });
+    });
+  }
+
+  function setCoverPhoto(idx) {
+    if (idx < 0) idx = COVER_PHOTOS.length - 1;
+    if (idx >= COVER_PHOTOS.length) idx = 0;
+    currentCoverIdx = idx;
+
+    const photo = COVER_PHOTOS[currentCoverIdx];
+
+    bgEl.style.opacity = '0.3';
+    bgEl.classList.remove('zoom-effect');
+
+    const tempImg = new Image();
+    tempImg.src = photo.url;
+    tempImg.onload = () => {
+      bgEl.style.backgroundImage = `url('${photo.url}')`;
+      bgEl.style.opacity = '1';
+      bgEl.classList.add('zoom-effect');
+    };
+
+    if (captionEl) captionEl.textContent = photo.title;
+    if (tagEl) tagEl.textContent = photo.tag;
+
+    if (indicatorsContainer) {
+      indicatorsContainer.querySelectorAll('.cover-dot').forEach((dot, i) => {
+        if (i === currentCoverIdx) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  function nextCoverPhoto() {
+    setCoverPhoto(currentCoverIdx + 1);
+  }
+
+  function prevCoverPhoto() {
+    setCoverPhoto(currentCoverIdx - 1);
+  }
+
+  function randomCoverPhoto() {
+    let nextIdx;
+    do {
+      nextIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
+    } while (nextIdx === currentCoverIdx && COVER_PHOTOS.length > 1);
+    setCoverPhoto(nextIdx);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevCoverPhoto();
+      restartCoverTimer();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextCoverPhoto();
+      restartCoverTimer();
+    });
+  }
+
+  if (randomBtn) {
+    randomBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      randomCoverPhoto();
+      restartCoverTimer();
+    });
+  }
+
+  function startCoverTimer() {
+    coverAutoTimer = setInterval(() => {
+      nextCoverPhoto();
+    }, 7500);
+  }
+
+  function restartCoverTimer() {
+    clearInterval(coverAutoTimer);
+    startCoverTimer();
+  }
+
+  // Seleccionar foto aleatoria al cargar la web
+  const initialRandomIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
+  setCoverPhoto(initialRandomIdx);
+  startCoverTimer();
+}
+
+/* ==========================================================================
+   8. VISOR DE INFOGRAFÍA DE LINEAMIENTOS PROYECTUALES
+   ========================================================================== */
+function initLineamientosZoom() {
+  const trigger = document.getElementById('graphicZoomTrigger');
+  if (trigger) {
+    trigger.addEventListener('click', () => {
+      if (typeof window.openLightbox === 'function') {
+        window.openLightbox(
+          ['assets/lineamientos-proyectuales.jpg'],
+          0,
+          'Lineamientos Proyectuales — Wellness & Humanización de la Salud'
+        );
+      }
+    });
+  }
+}
+
+/* ==========================================================================
+   9. BOTÓN OCULTO, LOGIN ADMINISTRADOR Y GESTIÓN DE OBRAS
+   ========================================================================== */
+const ADMIN_AUTH_KEY = 'emea_admin_session_auth_v1';
+
+function isUserAdmin() {
+  return sessionStorage.getItem(ADMIN_AUTH_KEY) === 'true';
+}
+
+function initSecretAdmin() {
+  const secretTrigger = document.getElementById('secretAdminTrigger');
+  const loginModal = document.getElementById('adminLoginModal');
+  const closeLoginBtn = document.getElementById('closeAdminLoginModal');
+  const cancelLoginBtn = document.getElementById('cancelAdminLogin');
+  const loginForm = document.getElementById('adminLoginForm');
+  const passwordInput = document.getElementById('adminPasswordInput');
+  const togglePwdBtn = document.getElementById('togglePasswordVisibility');
+  const errorMsg = document.getElementById('loginErrorMsg');
+  const addProjectModal = document.getElementById('addProjectModal');
+  const adminBar = document.getElementById('adminSessionBar');
+  const adminBarAddBtn = document.getElementById('adminBarAddBtn');
+  const adminBarLogoutBtn = document.getElementById('adminBarLogoutBtn');
+
+  function updateAdminUI() {
+    if (adminBar) {
+      adminBar.style.display = isUserAdmin() ? 'flex' : 'none';
+    }
+  }
+
+  updateAdminUI();
+
+  function triggerAdminPortal() {
+    if (isUserAdmin()) {
+      if (addProjectModal) {
+        addProjectModal.classList.add('active');
+      }
+    } else {
+      if (loginModal) {
+        if (errorMsg) errorMsg.style.display = 'none';
+        if (passwordInput) passwordInput.value = '';
+        loginModal.classList.add('active');
+        setTimeout(() => passwordInput && passwordInput.focus(), 150);
+      }
+    }
+  }
+
+  // Clic en el botón oculto del footer
+  if (secretTrigger) {
+    secretTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerAdminPortal();
+    });
+  }
+
+  // Atajo de teclado secreto: Ctrl + Shift + A o Alt + L
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) ||
+        (e.altKey && (e.key === 'L' || e.key === 'l'))) {
+      e.preventDefault();
+      triggerAdminPortal();
+    }
+  });
+
+  if (closeLoginBtn && loginModal) {
+    closeLoginBtn.addEventListener('click', () => {
+      loginModal.classList.remove('active');
+    });
+  }
+
+  if (cancelLoginBtn && loginModal) {
+    cancelLoginBtn.addEventListener('click', () => {
+      loginModal.classList.remove('active');
+    });
+  }
+
+  if (loginModal) {
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) {
+        loginModal.classList.remove('active');
+      }
+    });
+  }
+
+  if (togglePwdBtn && passwordInput) {
+    togglePwdBtn.addEventListener('click', () => {
+      const isPwd = passwordInput.type === 'password';
+      passwordInput.type = isPwd ? 'text' : 'password';
+      togglePwdBtn.innerHTML = isPwd
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+    });
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entered = (passwordInput ? passwordInput.value : '').trim();
+      const validPasswords = ['avila2026', 'manestaravila', 'admin'];
+
+      if (validPasswords.includes(entered.toLowerCase())) {
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        if (loginModal) loginModal.classList.remove('active');
+        updateAdminUI();
+        showToast('¡Acceso autorizado! Modo administración activado.');
+        if (addProjectModal) {
+          setTimeout(() => addProjectModal.classList.add('active'), 200);
+        }
+      } else {
+        if (errorMsg) errorMsg.style.display = 'block';
+        if (passwordInput) {
+          passwordInput.style.borderColor = '#EF4444';
+          setTimeout(() => {
+            passwordInput.style.borderColor = '';
+          }, 1500);
+        }
+      }
+    });
+  }
+
+  if (adminBarAddBtn && addProjectModal) {
+    adminBarAddBtn.addEventListener('click', () => {
+      addProjectModal.classList.add('active');
+    });
+  }
+
+  if (adminBarLogoutBtn) {
+    adminBarLogoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem(ADMIN_AUTH_KEY);
+      updateAdminUI();
+      if (addProjectModal) addProjectModal.classList.remove('active');
+      showToast('Sesión cerrada. Modo administración desactivado.');
+    });
+  }
 }
