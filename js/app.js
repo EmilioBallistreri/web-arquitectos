@@ -1,11 +1,12 @@
 /**
- * EMEA ARQUITECTURA - Application Logic & Dynamic Portfolio CMS
+ * MANESTAR + AVILA ARQUITECTURA
+ * Application Logic & Dynamic Portfolio CMS
  */
 
 import { INITIAL_PROJECTS } from './projects-data.js';
 
 // Estado global de proyectos con persistencia en LocalStorage
-const STORAGE_KEY = 'emea_projects_db_v1';
+const STORAGE_KEY = 'ma_projects_db_v3';
 
 function getStoredProjects() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -29,9 +30,11 @@ function saveProjects(projects) {
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initPhotoCover();
+  initSpecialtyButtons();
   initPortfolio();
   initProjectModals();
-  initLineamientosZoom();
+  initWellnessModal();
+  initVerticalServicesAccordion();
   initAdminModal();
   initSecretAdmin();
   initContactForm();
@@ -69,20 +72,76 @@ function initNavbar() {
 }
 
 /* ==========================================================================
-   2. PORTAFOLIO DINÁMICO Y FILTROS
+   2. BOTONES DE ESPECIALIDAD (PÁGINA 3 DEL PDF) & PORTAFOLIO
    ========================================================================== */
-let activeFilter = 'all';
+let activeFilter = 'salud'; // 'salud' por defecto como en la maqueta
+
+function initSpecialtyButtons() {
+  const btnSalud = document.getElementById('btnCatSalud');
+  const btnResidenciales = document.getElementById('btnCatResidenciales');
+  const catalogoSection = document.getElementById('catalogoObras');
+
+  if (btnSalud) {
+    btnSalud.addEventListener('click', () => {
+      setSpecialtyCategory('salud');
+      if (catalogoSection) {
+        catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
+  if (btnResidenciales) {
+    btnResidenciales.addEventListener('click', () => {
+      setSpecialtyCategory('residenciales');
+      if (catalogoSection) {
+        catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+}
+
+function setSpecialtyCategory(cat) {
+  activeFilter = cat;
+
+  // Actualizar estado activo en los dos botones de la página 3
+  const btnSalud = document.getElementById('btnCatSalud');
+  const btnResidenciales = document.getElementById('btnCatResidenciales');
+  if (btnSalud) btnSalud.classList.toggle('active', cat === 'salud');
+  if (btnResidenciales) btnResidenciales.classList.toggle('active', cat === 'residenciales');
+
+  // Actualizar pills del catálogo
+  const pills = document.querySelectorAll('.filter-pill');
+  pills.forEach(p => {
+    p.classList.toggle('active', p.dataset.filter === cat);
+  });
+
+  // Actualizar encabezados
+  const headingEl = document.getElementById('currentCategoryHeading');
+  const descEl = document.getElementById('currentCategoryDesc');
+  if (headingEl) {
+    if (cat === 'salud') {
+      headingEl.textContent = 'ARQUITECTURA PARA LA SALUD';
+      if (descEl) descEl.textContent = 'Infraestructura hospitalaria, diagnóstico por imágenes de alta complejidad y centros médicos.';
+    } else if (cat === 'residenciales') {
+      headingEl.textContent = 'RESIDENCIALES';
+      if (descEl) descEl.textContent = 'Viviendas contemporáneas de diseño a medida, arquitectura bioclimática y armonía espacial.';
+    } else {
+      headingEl.textContent = 'TODAS LAS OBRAS';
+      if (descEl) descEl.textContent = 'Catálogo completo de proyectos desarrollados por Manestar + Avila.';
+    }
+  }
+
+  renderProjects();
+}
 
 function initPortfolio() {
   renderProjects();
 
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      renderProjects();
+  const filterPills = document.querySelectorAll('.filter-pill');
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const cat = pill.dataset.filter;
+      setSpecialtyCategory(cat);
     });
   });
 }
@@ -105,32 +164,26 @@ function renderProjects() {
     return;
   }
 
+  // Página 4 del PDF: una foto como portada de cada obra y esa sea el botón para desplegar más datos de esa obra
   grid.innerHTML = filtered.map(proj => `
-    <article class="project-card" data-id="${proj.id}">
-      <div class="project-card-image">
-        <img src="${proj.image}" alt="${escapeHtml(proj.title)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80'">
-        <span class="project-card-badge ${proj.category === 'hospitalaria' ? 'badge-hospitalaria' : 'badge-habitacional'}">
-          ${proj.categoryLabel || (proj.category === 'hospitalaria' ? 'Arquitectura Sanitaria' : 'Arquitectura Habitacional')}
-        </span>
-      </div>
-      <div class="project-card-body">
-        <div class="project-card-meta">
-          <span>📍 ${escapeHtml(proj.location || 'Argentina')}</span>
-          <span>📐 ${escapeHtml(proj.surface || 'S/D')}</span>
-          <span>📅 ${escapeHtml(proj.year || '2024')}</span>
-        </div>
-        <h3 class="project-card-title">${escapeHtml(proj.title)}</h3>
-        <p class="project-card-summary">${escapeHtml(proj.summary || '')}</p>
-        <div class="project-card-footer">
-          <span>Ver Ficha Técnica Completa</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    <article class="project-card-editorial" data-id="${proj.id}">
+      <div class="project-cover-wrap">
+        <img src="${proj.image}" alt="${escapeHtml(proj.title)}" loading="lazy" class="project-cover-img" onerror="this.src='assets/siss-hero.jpg'">
+        <div class="project-cover-gradient"></div>
+        <div class="project-cover-info">
+          <span class="project-cover-badge">${escapeHtml(proj.categoryLabel || (proj.category === 'salud' ? 'Arquitectura Para la Salud' : 'Residenciales'))}</span>
+          <h3 class="project-cover-title">${escapeHtml(proj.shortTitle || proj.title)}</h3>
+          <span class="project-cover-action">
+            <span>Ver memoria descriptiva & fotos</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
         </div>
       </div>
     </article>
   `).join('');
 
   // Event listeners para abrir detalle
-  document.querySelectorAll('.project-card').forEach(card => {
+  document.querySelectorAll('.project-card-editorial').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.dataset.id;
       openProjectDetail(id);
@@ -139,7 +192,8 @@ function renderProjects() {
 }
 
 /* ==========================================================================
-   3. MODAL DE DETALLE DE OBRA
+   3. MODAL DE DETALLE DE OBRA / MEMORIA DESCRIPTIVA (PÁGINA 5 DEL PDF)
+   "PICA SOBRE PALABRA MEMORIA Y SE DESPLIEGA LA DESCRIPCIÓN Y SE ESCROLEA PARA ABAJO PARA VER LAS IMAGENES"
    ========================================================================== */
 function initProjectModals() {
   const modalBackdrop = document.getElementById('projectDetailModal');
@@ -172,111 +226,116 @@ function openProjectDetail(id) {
   const modalBackdrop = document.getElementById('projectDetailModal');
   const modalBody = document.getElementById('projectModalBody');
 
-  const specs = (proj.details && proj.details.specs) || [
-    { label: "Superficie", value: proj.surface || "Consultar" },
-    { label: "Ubicación", value: proj.location || "Argentina" },
-    { label: "Año de Proyecto", value: proj.year || "2024" },
-    { label: "Tipología", value: proj.categoryLabel || proj.category }
-  ];
-
   const rawGallery = (proj.details && proj.details.gallery && proj.details.gallery.length > 0)
     ? proj.details.gallery
     : [proj.image];
 
-  // Consolidar lista completa de imágenes únicas (con la imagen principal primero)
   const allModalImages = Array.from(new Set([proj.image, ...rawGallery]));
 
+  // Texto de la Memoria Descriptiva formateado en párrafos
+  const memoriaRaw = proj.memoriaDescriptiva || proj.summary || 'Memoria descriptiva en elaboración.';
+  const memoriaParagraphs = memoriaRaw.split('\n\n').filter(p => p.trim().length > 0);
+
   modalBody.innerHTML = `
-    <div class="project-modal-hero" id="projectHeroTrigger" title="Haz clic para ampliar la imagen en alta resolución">
-      <img id="mainDetailImage" src="${proj.image}" alt="${escapeHtml(proj.title)}">
-      <div class="hero-zoom-badge">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-        <span>Ampliar imagen</span>
+    <div class="project-detail-layout">
+      <!-- Barra Superior / Header de Ficha Técnica -->
+      <div class="project-detail-topbar">
+        <div class="detail-brand-badge">
+          <img src="assets/logo-manestar-avila-black.png" alt="Manestar + Avila" class="detail-logo-mini">
+        </div>
+        <div class="detail-category-tag">
+          ${escapeHtml(proj.categoryLabel || (proj.category === 'salud' ? 'ARQUITECTURA PARA LA SALUD' : 'RESIDENCIALES'))}
+        </div>
       </div>
-    </div>
-    <div class="project-modal-content">
-      <div class="modal-tag-row">
-        <span class="section-tag">${proj.categoryLabel || proj.category}</span>
-        <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.05em;">ID: ${proj.id}</span>
+
+      <!-- Encabezado de la Obra (Página 5) -->
+      <div class="project-detail-header">
+        <h2 class="project-detail-title">${escapeHtml(proj.title)}</h2>
+        <div class="project-detail-meta-line">
+          ${proj.status ? `<span>${escapeHtml(proj.status)}</span> <span class="meta-sep">|</span>` : ''}
+          <span>${escapeHtml(proj.year || '2026')}</span>
+          <span class="meta-sep">|</span>
+          <span>${escapeHtml(proj.surface || '')}</span>
+          <span class="meta-sep">|</span>
+          <span>${escapeHtml(proj.location || 'Córdoba, Argentina')}</span>
+        </div>
+        <div class="project-detail-usage">
+          <strong>Uso:</strong> ${escapeHtml(proj.use || (proj.category === 'salud' ? 'Salud / Diagnóstico por Imágenes' : 'Habitacional / Residencial'))}
+        </div>
       </div>
-      <h2 class="project-modal-title">${escapeHtml(proj.title)}</h2>
-      
-      <div class="project-specs-grid">
-        ${specs.map(s => `
-          <div class="spec-box">
-            <span class="spec-box-label">${escapeHtml(s.label)}</span>
-            <span class="spec-box-val">${escapeHtml(s.value)}</span>
+
+      <!-- ACORDEÓN MEMORIA DESCRIPTIVA (PÁGINA 5 DEL PDF) -->
+      <div class="memoria-accordion-box">
+        <button class="memoria-toggle-header active" id="memoriaAccordionBtn" aria-expanded="true" title="Pica sobre la palabra Memoria para desplegar o contraer">
+          <div class="memoria-toggle-title">
+            <span class="memoria-label-word">MEMORIA DESCRIPTIVA</span>
+            <span class="memoria-instruction-hint">(Pica aquí para desplegar / contraer)</span>
           </div>
-        `).join('')}
+          <span class="memoria-arrow-icon">▼</span>
+        </button>
+
+        <div class="memoria-content-body open" id="memoriaContentBody">
+          <div class="memoria-paragraphs">
+            ${memoriaParagraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')}
+          </div>
+        </div>
       </div>
 
-      <div class="project-modal-body">
-        <h4>Memoria Descriptiva & Concepto</h4>
-        <p>${escapeHtml(proj.summary || '')}</p>
+      <!-- SECCIÓN SCROLL PARA ABAJO PARA VER LAS IMÁGENES (PÁGINA 5) -->
+      <div class="project-gallery-scroll-section">
+        <div class="gallery-scroll-prompt">
+          <span class="scroll-arrow-down">↓</span>
+          <span>DESLIZA HACIA ABAJO PARA VER LAS IMÁGENES</span>
+        </div>
 
-        ${proj.details && proj.details.program ? `
-          <h4>Programa Arquitectónico</h4>
-          <p>${escapeHtml(proj.details.program)}</p>
-        ` : ''}
-
-        ${proj.details && proj.details.challenges ? `
-          <h4>Desafíos Técnicos & Bioseguridad</h4>
-          <p>${escapeHtml(proj.details.challenges)}</p>
-        ` : ''}
-
-        ${allModalImages.length > 0 ? `
-          <div class="gallery-header">
-            <h4>Galería del Proyecto</h4>
-            <span class="gallery-hint">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-              Haz clic en cualquier imagen para ampliarla
-            </span>
-          </div>
-          <div class="project-gallery-thumbs">
-            ${allModalImages.map((imgUrl, i) => `
-              <div class="thumb-img" data-gallery-idx="${i}" title="Ampliar imagen ${i + 1} en alta resolución">
-                <img src="${imgUrl}" alt="Vista ${i + 1} de ${escapeHtml(proj.title)}">
-                <div class="thumb-overlay">
-                  <span class="thumb-overlay-badge">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    Ampliar
-                  </span>
-                </div>
+        <div class="project-photos-stack">
+          ${allModalImages.map((imgUrl, i) => `
+            <div class="project-stack-photo-item" data-idx="${i}" title="Haz clic para ampliar">
+              <img src="${imgUrl}" alt="Vista ${i + 1} de ${escapeHtml(proj.title)}" class="stack-img" loading="lazy">
+              <div class="stack-photo-overlay">
+                <span class="stack-zoom-pill">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span>Ampliar Vista ${i + 1}</span>
+                </span>
               </div>
-            `).join('')}
-          </div>
-        ` : ''}
+            </div>
+          `).join('')}
+        </div>
       </div>
 
-      <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: flex-end;">
+      <!-- Pie de Modal: CTA Contacto -->
+      <div class="project-detail-footer-cta">
+        <p>¿Desea consultar sobre un proyecto similar?</p>
         <a href="#contacto" onclick="document.getElementById('projectDetailModal').classList.remove('active')" class="btn btn-primary">
-          Consultar por este tipo de obra
+          Conversar con el Estudio
         </a>
       </div>
     </div>
   `;
 
-  // Listeners para ampliar imagen principal y galería
-  const heroTrigger = modalBody.querySelector('#projectHeroTrigger');
-  if (heroTrigger) {
-    heroTrigger.addEventListener('click', () => {
-      const mainImg = document.getElementById('mainDetailImage');
-      const currentSrc = mainImg ? mainImg.src : proj.image;
-      const idx = Math.max(0, allModalImages.findIndex(src => currentSrc.includes(src) || src.includes(currentSrc)));
-      if (typeof window.openLightbox === 'function') {
-        window.openLightbox(allModalImages, idx, proj.title);
+  // Listener para el acordeón de Memoria Descriptiva
+  const memoriaBtn = modalBody.querySelector('#memoriaAccordionBtn');
+  const memoriaBody = modalBody.querySelector('#memoriaContentBody');
+  if (memoriaBtn && memoriaBody) {
+    memoriaBtn.addEventListener('click', () => {
+      const isOpen = memoriaBody.classList.contains('open');
+      if (isOpen) {
+        memoriaBody.classList.remove('open');
+        memoriaBtn.classList.remove('active');
+        memoriaBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        memoriaBody.classList.add('open');
+        memoriaBtn.classList.add('active');
+        memoriaBtn.setAttribute('aria-expanded', 'true');
       }
     });
   }
 
-  const thumbEls = modalBody.querySelectorAll('.thumb-img');
-  thumbEls.forEach((thumb) => {
-    thumb.addEventListener('click', () => {
-      const idx = parseInt(thumb.getAttribute('data-gallery-idx'), 10) || 0;
-      const mainImg = document.getElementById('mainDetailImage');
-      if (mainImg && allModalImages[idx]) {
-        mainImg.src = allModalImages[idx];
-      }
+  // Listeners para ampliar fotos de la galería en lightbox
+  const photoItems = modalBody.querySelectorAll('.project-stack-photo-item');
+  photoItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.idx, 10) || 0;
       if (typeof window.openLightbox === 'function') {
         window.openLightbox(allModalImages, idx, proj.title);
       }
@@ -551,41 +610,41 @@ function escapeHtml(text) {
 /* ==========================================================================
    7. PORTADA DE FOTOS CON SELECCIÓN ALEATORIA & ROTACIÓN
    ========================================================================== */
+/* ==========================================================================
+   6. PORTADA DE FOTOS CON SELECCIÓN ALEATORIA & ROTACIÓN (PÁGINA 1 DEL PDF)
+   ========================================================================== */
+const COVER_ROTATION_MS = 6500;
+
 const COVER_PHOTOS = [
   {
-    url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=85",
-    title: "Centro de Oncología y Terapia Avanzada San Lucas",
-    tag: "Infraestructura Sanitaria de Alta Complejidad"
+    url: "assets/siss-hero.jpg",
+    title: "Centro Médico SISS",
+    tag: "Centro Médico de Vanguardia",
+    sub: "Arquitectura Para la Salud — Córdoba"
   },
   {
-    url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=85",
-    title: "Residencia Loma Alta — Hormigón Visto y Luz Cenital",
-    tag: "Arquitectura Habitacional Contemporánea"
+    url: "assets/villa-dolores-night.jpg",
+    title: "Centro de Diagnóstico e Imágenes Médicas Villa Dolores",
+    tag: "Salud / Diagnóstico por Imágenes",
+    sub: "Fachada Vidriada y Hall a Doble Altura Iluminado"
   },
   {
-    url: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1920&q=85",
-    title: "Bloque Quirúrgico de Flujo Laminar e ISO 5",
-    tag: "Bioseguridad & Quirófanos Inteligentes"
+    url: "assets/villa-dolores-facade.jpg",
+    title: "Centro Diagnóstico por Imágenes Villa Dolores",
+    tag: "Arquitectura Para la Salud",
+    sub: "Piel Metálica Microperforada de Planos Desplazados"
   },
   {
-    url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=85",
-    title: "Complejo Residencial Bosque Serena",
-    tag: "Viviendas Biofílicas Sustentables"
+    url: "assets/cat-salud.jpg",
+    title: "Arquitectura Para la Salud",
+    tag: "Especialidad en Salud",
+    sub: "Envolventes Arquitectónicas & Rigor Bioseguro"
   },
   {
-    url: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1920&q=85",
-    title: "Clínica Materno-Infantil Los Álamos",
-    tag: "Sanidad Pediátrica y Humanización"
-  },
-  {
-    url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=85",
-    title: "Casa Prismática — Diálogo con el Paisaje Serrano",
-    tag: "Arquitectura Residencial de Vanguardia"
-  },
-  {
-    url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1920&q=85",
-    title: "Desarrollo Habitacional Colectivo & Terrazas Verdes",
-    tag: "Arquitectura Multifamiliar Biofílica"
+    url: "assets/cat-residenciales.jpg",
+    title: "Residenciales Contemporáneos",
+    tag: "Arquitectura Residencial",
+    sub: "Viviendas Unifamiliares con Eficiencia Bioclimática"
   }
 ];
 
@@ -595,27 +654,18 @@ let coverAutoTimer = null;
 function initPhotoCover() {
   const bgEl = document.getElementById('photoCoverBg');
   const captionEl = document.getElementById('coverPhotoCaption');
-  const tagEl = document.getElementById('coverPhotoTag');
-  const indicatorsContainer = document.getElementById('coverIndicators');
+  const subEl = document.getElementById('coverPhotoSub');
+  const currentNumEl = document.getElementById('coverCurrentNum');
+  const totalNumEl = document.getElementById('coverTotalNum');
+  const progressFill = document.getElementById('coverProgressFill');
   const prevBtn = document.getElementById('coverPrevBtn');
   const nextBtn = document.getElementById('coverNextBtn');
   const randomBtn = document.getElementById('coverRandomBtn');
 
   if (!bgEl) return;
 
-  // Renderizar indicadores interactivos
-  if (indicatorsContainer) {
-    indicatorsContainer.innerHTML = COVER_PHOTOS.map((_, i) => `
-      <span class="cover-dot" data-idx="${i}" title="Ver fotografía ${i + 1}"></span>
-    `).join('');
-
-    indicatorsContainer.querySelectorAll('.cover-dot').forEach(dot => {
-      dot.addEventListener('click', () => {
-        const idx = parseInt(dot.dataset.idx, 10);
-        setCoverPhoto(idx);
-        restartCoverTimer();
-      });
-    });
+  if (totalNumEl) {
+    totalNumEl.textContent = String(COVER_PHOTOS.length).padStart(2, '0');
   }
 
   function setCoverPhoto(idx) {
@@ -625,7 +675,17 @@ function initPhotoCover() {
 
     const photo = COVER_PHOTOS[currentCoverIdx];
 
-    bgEl.style.opacity = '0.3';
+    // Actualizar Contador editorial (ej: 01 / 05)
+    if (currentNumEl) {
+      currentNumEl.textContent = String(currentCoverIdx + 1).padStart(2, '0');
+    }
+
+    // Actualizar textos y metadatos de la obra
+    if (captionEl) captionEl.textContent = photo.title;
+    if (subEl) subEl.textContent = photo.sub || photo.tag;
+
+    // Transición suave de fondo con efecto zoom cinematográfico continuo
+    bgEl.style.opacity = '0.35';
     bgEl.classList.remove('zoom-effect');
 
     const tempImg = new Image();
@@ -636,17 +696,13 @@ function initPhotoCover() {
       bgEl.classList.add('zoom-effect');
     };
 
-    if (captionEl) captionEl.textContent = photo.title;
-    if (tagEl) tagEl.textContent = photo.tag;
-
-    if (indicatorsContainer) {
-      indicatorsContainer.querySelectorAll('.cover-dot').forEach((dot, i) => {
-        if (i === currentCoverIdx) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
-      });
+    // Actualizar barra de progreso lineal de auto-rotación
+    if (progressFill) {
+      progressFill.style.transition = 'none';
+      progressFill.style.width = '0%';
+      void progressFill.offsetWidth;
+      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
+      progressFill.style.width = '100%';
     }
   }
 
@@ -664,6 +720,17 @@ function initPhotoCover() {
       nextIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
     } while (nextIdx === currentCoverIdx && COVER_PHOTOS.length > 1);
     setCoverPhoto(nextIdx);
+
+    if (randomBtn) {
+      const svg = randomBtn.querySelector('svg');
+      if (svg) {
+        svg.style.transition = 'transform 0.4s ease';
+        svg.style.transform = 'rotate(180deg)';
+        setTimeout(() => {
+          svg.style.transform = '';
+        }, 400);
+      }
+    }
   }
 
   if (prevBtn) {
@@ -691,9 +758,16 @@ function initPhotoCover() {
   }
 
   function startCoverTimer() {
+    if (progressFill) {
+      progressFill.style.transition = 'none';
+      progressFill.style.width = '0%';
+      void progressFill.offsetWidth;
+      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
+      progressFill.style.width = '100%';
+    }
     coverAutoTimer = setInterval(() => {
       nextCoverPhoto();
-    }, 7500);
+    }, COVER_ROTATION_MS);
   }
 
   function restartCoverTimer() {
@@ -701,28 +775,89 @@ function initPhotoCover() {
     startCoverTimer();
   }
 
-  // Seleccionar foto aleatoria al cargar la web
-  const initialRandomIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
-  setCoverPhoto(initialRandomIdx);
+  // Foto inicial (Centro Médico SISS en índice 0 o aleatorio)
+  setCoverPhoto(0);
   startCoverTimer();
 }
 
 /* ==========================================================================
-   8. VISOR DE INFOGRAFÍA DE LINEAMIENTOS PROYECTUALES
+   7. MODAL DE WELLNESS (BIENESTAR) - PÁGINA 7 DEL PDF
    ========================================================================== */
-function initLineamientosZoom() {
-  const trigger = document.getElementById('graphicZoomTrigger');
-  if (trigger) {
-    trigger.addEventListener('click', () => {
+function initWellnessModal() {
+  const openBtn = document.getElementById('openWellnessModalBtn');
+  const modalBackdrop = document.getElementById('wellnessDetailModal');
+  const closeBtn = document.getElementById('closeWellnessModal');
+  const wheelTrigger = document.getElementById('wellnessWheelTrigger');
+
+  if (openBtn && modalBackdrop) {
+    openBtn.addEventListener('click', () => {
+      modalBackdrop.classList.add('active');
+    });
+  }
+
+  if (closeBtn && modalBackdrop) {
+    closeBtn.addEventListener('click', () => {
+      modalBackdrop.classList.remove('active');
+    });
+
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) {
+        modalBackdrop.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
+        modalBackdrop.classList.remove('active');
+      }
+    });
+  }
+
+  if (wheelTrigger) {
+    wheelTrigger.addEventListener('click', () => {
       if (typeof window.openLightbox === 'function') {
         window.openLightbox(
-          ['assets/lineamientos-proyectuales.jpg'],
+          ['assets/wellness-wheel.jpg'],
           0,
-          'Lineamientos Proyectuales — Wellness & Humanización de la Salud'
+          'Las 8 Dimensiones del Wellness en Arquitectura Sanitaria'
         );
       }
     });
   }
+}
+
+/* ==========================================================================
+   8. ACORDEÓN VERTICAL DE SERVICIOS / QUÉ HACEMOS (PÁGINAS 8 A 11 DEL PDF)
+   "al picar cada boton de los verticales se despliega texto con la descripción"
+   ========================================================================== */
+function initVerticalServicesAccordion() {
+  const accordion = document.getElementById('verticalServicesAccordion');
+  if (!accordion) return;
+
+  const panels = accordion.querySelectorAll('.vertical-panel');
+
+  panels.forEach(panel => {
+    const header = panel.querySelector('.vertical-tab-header');
+    if (header) {
+      header.addEventListener('click', () => {
+        const isCurrentlyActive = panel.classList.contains('active');
+
+        // Colapsar todos
+        panels.forEach(p => {
+          p.classList.remove('active');
+          const ind = p.querySelector('.vertical-panel-indicator');
+          if (ind) ind.textContent = '+';
+        });
+
+        // Si no estaba activo, expandirlo
+        if (!isCurrentlyActive) {
+          panel.classList.add('active');
+          const ind = panel.querySelector('.vertical-panel-indicator');
+          if (ind) ind.textContent = '—';
+        }
+      });
+    }
+  });
 }
 
 /* ==========================================================================
