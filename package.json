@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "pngjs": "^7.0.0",
     "vite": "^8.2.2"
   }
 }
