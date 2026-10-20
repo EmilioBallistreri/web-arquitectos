@@ -871,6 +871,7 @@ function isUserAdmin() {
 
 function initSecretAdmin() {
   const secretTrigger = document.getElementById('secretAdminTrigger');
+  const portfolioAdminBtn = document.getElementById('portfolioAdminBtn');
   const loginModal = document.getElementById('adminLoginModal');
   const closeLoginBtn = document.getElementById('closeAdminLoginModal');
   const cancelLoginBtn = document.getElementById('cancelAdminLogin');
@@ -906,9 +907,17 @@ function initSecretAdmin() {
     }
   }
 
-  // Clic en el botón oculto del footer
+  // Clic en el botón del footer
   if (secretTrigger) {
     secretTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      triggerAdminPortal();
+    });
+  }
+
+  // Clic en el botón del catálogo de obras (+ Cargar Obra)
+  if (portfolioAdminBtn) {
+    portfolioAdminBtn.addEventListener('click', (e) => {
       e.preventDefault();
       triggerAdminPortal();
     });
