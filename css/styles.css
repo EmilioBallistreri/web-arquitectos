@@ -2584,3 +2584,1137 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   NUEVAS REGLAS DE DISEÑO BASADAS EN EL PDF DE REQUERIMIENTOS (12 PÁGINAS)
+   ========================================================================== */
+
+/* 1. PORTADA EDITORIAL (PÁGINA 1) */
+.cover-hero-editorial {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+  width: 90%;
+  max-width: 650px;
+}
+.cover-editorial-logo {
+  max-width: 380px;
+  width: 85%;
+  height: auto;
+  margin: 0 auto;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.45));
+}
+
+/* 2. NOSOTROS: FAJA BLANCA SOBRE FONDO DE OBRA (PÁGINA 2) */
+.about-hero-section {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #0b0f14;
+  overflow: hidden;
+  padding: 0;
+}
+.about-hero-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/siss-hero.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+.about-white-band {
+  position: relative;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 4.5rem 0;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  z-index: 2;
+}
+.about-band-container {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+.about-band-logo {
+  max-width: 220px;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+.about-band-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 2.3vw, 2.2rem);
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.25;
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+.about-band-subtitle {
+  display: block;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-weight: 500;
+  color: #374151;
+  margin-top: 0.5rem;
+  line-height: 1.35;
+}
+.about-band-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  transition: all var(--transition-fast);
+}
+.about-band-link:hover {
+  color: var(--accent-teal);
+  transform: translateX(4px);
+}
+.architects-duo-frame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.architect-portrait-col {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  background: #111;
+}
+.architect-portrait-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  object-position: top center;
+  filter: grayscale(100%) contrast(1.06);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+.architect-portrait-col:hover .architect-portrait-img {
+  transform: scale(1.03);
+  filter: grayscale(70%) contrast(1.1);
+}
+.architect-name-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, transparent 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.architect-name-tag span {
+  display: block;
+  font-size: 0.75rem;
+  color: #d1d5db;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.about-detail-drawer {
+  position: relative;
+  z-index: 2;
+  background: #f8fafc;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.about-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 3rem;
+  align-items: center;
+}
+.about-detail-quote blockquote {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  line-height: 1.45;
+  color: #1e293b;
+  border-left: 3px solid var(--accent-teal);
+  padding-left: 1.5rem;
+  font-style: italic;
+}
+.about-detail-text p {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.about-detail-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* 3. PROYECTOS: DOS BOTONES AL ANCHO DE LA PÁGINA (PÁGINA 3) */
+.specialties-header {
+  padding: 4rem 0 1.5rem;
+  background: #f8fafc;
+  text-align: center;
+}
+.specialties-tag {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-teal);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.specialties-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: #0f172a;
+}
+.specialties-split-banner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 60vh;
+  min-height: 440px;
+  overflow: hidden;
+}
+.specialty-btn-card {
+  position: relative;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  overflow: hidden;
+  background: #000;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.specialty-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.specialty-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(10, 15, 22, 0.85) 0%, rgba(10, 15, 22, 0.35) 60%, rgba(10, 15, 22, 0.2) 100%);
+  transition: background 0.4s ease;
+}
+.specialty-btn-card:hover .specialty-bg-img,
+.specialty-btn-card.active .specialty-bg-img {
+  transform: scale(1.05);
+}
+.specialty-btn-card:hover .specialty-overlay {
+  background: linear-gradient(to top, rgba(10, 15, 22, 0.9) 0%, rgba(10, 15, 22, 0.2) 100%);
+}
+.specialty-btn-card.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--accent-teal);
+  box-shadow: 0 -2px 10px rgba(14, 124, 134, 0.5);
+}
+.specialty-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 3rem;
+  z-index: 2;
+  color: #fff;
+}
+.specialty-eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4fd1c5;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.specialty-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+.specialty-action {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform var(--transition-fast);
+}
+.specialty-btn-card:hover .specialty-action {
+  transform: translateX(6px);
+  color: #fff;
+}
+
+/* 4. CATÁLOGO DE OBRAS (PÁGINA 4) */
+.projects-catalog-wrap {
+  padding: 4.5rem 0 6rem;
+  background: #f8fafc;
+}
+.catalog-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.catalog-section-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-teal);
+  text-transform: uppercase;
+}
+.catalog-current-heading {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: #0f172a;
+  margin: 0.35rem 0;
+}
+.catalog-current-desc {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+.catalog-filter-pills {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-pill {
+  border: 1px solid var(--border-color);
+  background: #fff;
+  color: #475569;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.filter-pill:hover,
+.filter-pill.active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+.projects-grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
+.project-card-editorial {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  background: #0b0f14;
+}
+.project-card-editorial:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+}
+.project-cover-wrap {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.project-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card-editorial:hover .project-cover-img {
+  transform: scale(1.05);
+}
+.project-cover-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(10, 15, 22, 0.92) 0%, rgba(10, 15, 22, 0.35) 60%, transparent 100%);
+  transition: opacity 0.3s ease;
+}
+.project-cover-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 2rem 2rem 1.75rem;
+  z-index: 2;
+  color: #fff;
+}
+.project-cover-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #4fd1c5;
+  margin-bottom: 0.4rem;
+}
+.project-cover-title {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+}
+.project-cover-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.project-card-editorial:hover .project-cover-action {
+  color: #fff;
+  transform: translateX(4px);
+}
+
+/* 5. FICHA DE OBRA & MEMORIA DESCRIPTIVA (PÁGINA 5) */
+.modal-window-lg {
+  max-width: 1100px;
+  width: 95%;
+  max-height: 92vh;
+  padding: 3rem;
+  overflow-y: auto;
+}
+.project-detail-layout {
+  display: flex;
+  flex-direction: column;
+}
+.project-detail-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+.detail-logo-mini {
+  max-width: 140px;
+  height: auto;
+}
+.detail-category-tag {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-teal);
+  text-transform: uppercase;
+}
+.project-detail-header {
+  margin-bottom: 2rem;
+}
+.project-detail-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+.project-detail-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 0.6rem;
+}
+.meta-sep {
+  color: #cbd5e1;
+}
+.project-detail-usage {
+  font-size: 0.95rem;
+  color: #334155;
+}
+.memoria-accordion-box {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  margin-bottom: 3.5rem;
+  overflow: hidden;
+}
+.memoria-toggle-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.75rem;
+  background: #fff;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+.memoria-toggle-header:hover {
+  background: #f1f5f9;
+}
+.memoria-label-word {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.05em;
+  margin-right: 0.75rem;
+}
+.memoria-instruction-hint {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+}
+.memoria-arrow-icon {
+  font-size: 0.9rem;
+  color: #64748b;
+  transition: transform 0.3s ease;
+}
+.memoria-toggle-header.active .memoria-arrow-icon {
+  transform: rotate(180deg);
+}
+.memoria-content-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease-out, padding 0.3s ease;
+  padding: 0 1.75rem;
+  background: #fff;
+}
+.memoria-content-body.open {
+  max-height: 1400px;
+  padding: 1.75rem 1.75rem 2rem;
+}
+.memoria-paragraphs p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #334155;
+  margin-bottom: 1.25rem;
+}
+.memoria-paragraphs p:last-child {
+  margin-bottom: 0;
+}
+.project-gallery-scroll-section {
+  margin-top: 1rem;
+}
+.gallery-scroll-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  padding: 0.75rem;
+  background: #f1f5f9;
+  border-radius: var(--radius-sm);
+}
+.scroll-arrow-down {
+  animation: bounceDown 1.6s infinite ease-in-out;
+}
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+.project-photos-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+.project-stack-photo-item {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: #0b0f14;
+}
+.stack-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.project-stack-photo-item:hover .stack-img {
+  transform: scale(1.02);
+}
+.stack-photo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.project-stack-photo-item:hover .stack-photo-overlay {
+  opacity: 1;
+}
+.stack-zoom-pill {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.project-detail-footer-cta {
+  margin-top: 3.5rem;
+  padding: 2.5rem;
+  background: #f8fafc;
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.project-detail-footer-cta p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* 6. WELLNESS (BIENESTAR) - PÁGINAS 6 Y 7 */
+.wellness-banner-section {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  overflow: hidden;
+  padding: 6rem 0;
+}
+.wellness-bg-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+.wellness-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.wellness-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(10, 15, 22, 0.92) 0%, rgba(10, 15, 22, 0.82) 50%, rgba(10, 15, 22, 0.6) 100%);
+}
+.wellness-container {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+.wellness-top-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.wellness-strip-tag {
+  color: #cbd5e1;
+}
+.wellness-strip-divider {
+  color: #64748b;
+}
+.wellness-strip-highlight {
+  color: #4fd1c5;
+}
+.wellness-quotes-block {
+  margin-bottom: 2.5rem;
+}
+.wellness-quote-main {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+  line-height: 1.3;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-style: normal;
+}
+.wellness-quote-sub {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #4fd1c5;
+  margin-bottom: 1rem;
+}
+.wellness-quote-desc {
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  line-height: 1.7;
+}
+.wellness-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.wellness-more-btn:hover {
+  color: #4fd1c5;
+  transform: translateX(4px);
+}
+.wellness-flower-icon {
+  font-size: 1.4rem;
+  color: #ec4899;
+  line-height: 1;
+}
+
+/* Modal Wellness (Página 7) */
+.wellness-modal-body {
+  padding: 1rem 0;
+}
+.wellness-modal-header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.wellness-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-teal);
+  margin-bottom: 0.75rem;
+}
+.wellness-modal-quote {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: #0f172a;
+  line-height: 1.35;
+  font-style: italic;
+}
+.wellness-modal-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.wellness-modal-text-col p {
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: #334155;
+  margin-bottom: 1.25rem;
+}
+.wellness-modal-graphic-col {
+  text-align: center;
+}
+.wellness-wheel-wrapper {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.wellness-wheel-img {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.wheel-zoom-badge {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.8);
+  color: #fff;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.wellness-dimensions-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+.chip-item {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+/* 7. QUÉ HACEMOS: ACORDEÓN VERTICAL (PÁGINAS 8 A 11) */
+.services-vertical-section {
+  padding: 6rem 0;
+  background: #fff;
+}
+.services-intro-block {
+  max-width: 950px;
+  margin-bottom: 3.5rem;
+}
+.services-intro-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 2.8vw, 2.3rem);
+  color: #0f172a;
+  line-height: 1.35;
+  margin: 0.75rem 0 1.25rem;
+}
+.services-intro-text {
+  font-size: 1.05rem;
+  color: #475569;
+  line-height: 1.85;
+}
+.vertical-accordion-wrapper {
+  margin-top: 2rem;
+}
+.vertical-accordion {
+  display: flex;
+  height: 580px;
+  gap: 0.75rem;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+.vertical-panel {
+  display: flex;
+  flex: 0 0 72px;
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+}
+.vertical-panel.active {
+  flex: 1 1 auto;
+  background: #fff;
+  cursor: default;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+.vertical-tab-header {
+  width: 72px;
+  min-width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 0.5rem;
+  background: #f8fafc;
+  border-right: 1px solid var(--border-color);
+  user-select: none;
+  cursor: pointer;
+}
+.vertical-panel:hover:not(.active) .vertical-tab-header {
+  background: #f1f5f9;
+}
+.vertical-panel-num {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-teal);
+}
+.vertical-panel-title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0f172a;
+  white-space: nowrap;
+  margin: auto 0;
+}
+.vertical-panel-indicator {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #64748b;
+}
+.vertical-panel-body {
+  display: none;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr 1.35fr;
+  overflow: hidden;
+}
+.vertical-panel.active .vertical-panel-body {
+  display: grid;
+}
+.vertical-panel-media {
+  position: relative;
+  height: 100%;
+  background: #0b0f14;
+}
+.vertical-panel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.vertical-panel-content {
+  padding: 3.5rem 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+.vertical-panel-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-teal);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.vertical-panel-heading {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+  line-height: 1.25;
+}
+.vertical-panel-desc {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: #334155;
+  margin-bottom: 1.5rem;
+}
+.vertical-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+.vertical-feature-list li {
+  font-size: 0.95rem;
+  color: #475569;
+  padding: 0.35rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.vertical-feature-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-teal);
+  font-weight: 700;
+}
+
+/* 8. CONTACTO & FOOTER (PÁGINA 12) */
+.contact-quote-banner {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  padding: 2.5rem 2rem;
+  background: #f8fafc;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+.contact-quote-banner blockquote {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: #1e293b;
+  line-height: 1.6;
+  font-style: italic;
+}
+.footer-columns-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.25fr;
+  gap: 3rem;
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.footer-logo-img {
+  max-width: 200px;
+  height: auto;
+}
+.footer-col-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #0f172a;
+  margin-bottom: 1.25rem;
+}
+.footer-col-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-col-links li {
+  margin-bottom: 0.65rem;
+}
+.footer-col-links a {
+  color: #475569;
+  font-size: 0.92rem;
+  transition: color var(--transition-fast);
+}
+.footer-col-links a:hover {
+  color: var(--accent-teal);
+}
+.footer-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.75rem 0;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+/* 9. BOTÓN FLOTANTE WHATSAPP */
+.floating-whatsapp-btn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  z-index: 999;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  text-decoration: none;
+}
+.floating-whatsapp-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.6);
+  color: #fff;
+}
+
+/* RESPONSIVE PARA DISPOSITIVOS MÓVILES Y TABLETS */
+@media (max-width: 992px) {
+  .about-band-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .specialties-split-banner {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .specialty-btn-card {
+    height: 320px;
+  }
+  .projects-grid-editorial {
+    grid-template-columns: 1fr;
+  }
+  .vertical-accordion {
+    flex-direction: column;
+    height: auto;
+  }
+  .vertical-panel {
+    flex: none;
+    flex-direction: column;
+  }
+  .vertical-tab-header {
+    width: 100%;
+    min-width: 100%;
+    height: 60px;
+    flex-direction: row;
+    padding: 0 1.5rem;
+  }
+  .vertical-panel-title {
+    writing-mode: horizontal-tb;
+    transform: none;
+    margin: 0;
+  }
+  .vertical-panel.active .vertical-panel-body {
+    grid-template-columns: 1fr;
+  }
+  .vertical-panel-media {
+    height: 280px;
+  }
+  .vertical-panel-content {
+    padding: 2rem 1.5rem;
+  }
+  .wellness-modal-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-columns-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .architects-duo-frame {
+    grid-template-columns: 1fr;
+  }
+  .architect-portrait-img {
+    height: 360px;
+  }
+  .footer-columns-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
