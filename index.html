@@ -83,17 +83,12 @@
           <span>Explorar Obras</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="#lineamientos" class="btn btn-secondary">Lineamientos Proyectuales</a>
+        <a href="#lineamientos" class="btn btn-outline-white">Lineamientos Proyectuales</a>
         <a href="#contacto" class="btn btn-outline-white">Agendar Consulta</a>
       </div>
 
-      <!-- Barra de control y metadata de la fotografía de portada -->
+      <!-- Barra de control minimalista de la portada fotográfica (imagen 100% limpia sin textos invasivos) -->
       <div class="photo-cover-controls">
-        <div class="cover-caption-box">
-          <span class="caption-label">PROYECTO EN PORTADA</span>
-          <span class="caption-title" id="coverPhotoCaption">Cargando fotografía arquitectónica...</span>
-        </div>
-
         <div class="cover-nav-group">
           <button class="cover-control-btn" id="coverPrevBtn" aria-label="Fotografía anterior" title="Fotografía anterior">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -165,17 +160,17 @@
             </div>
           </article>
 
-          <!-- Arquitecta Socia Manestar -->
+          <!-- Arquitecta Socia Enid Manestar -->
           <article class="architect-card">
             <div class="architect-photo-wrapper">
-              <img src="assets/arquitecta-socia.jpg" alt="Arq. Manestar - Socia Titular" class="architect-photo">
+              <img src="assets/arquitecta-socia.jpg" alt="Arq. Enid Manestar - Socia Fundadora" class="architect-photo">
               <span class="architect-tag-badge">Socia Fundadora</span>
             </div>
             <div class="architect-info">
-              <h3 class="architect-name">Arq. Manestar</h3>
+              <h3 class="architect-name">Arq. Enid Manestar</h3>
               <p class="architect-role">Especialista en Planificación Médica Funcional, Gestión Normativa y Dirección de Obras.</p>
               <div class="architect-social-row">
-                <a href="https://www.instagram.com/manestaravila/" target="_blank" rel="noopener noreferrer" class="architect-social-pill" aria-label="Instagram Manestar + Avila">
+                <a href="https://www.instagram.com/manestaravila/" target="_blank" rel="noopener noreferrer" class="architect-social-pill" aria-label="Instagram de Arq. Enid Manestar / Manestar + Avila">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                   <span>@manestaravila</span>
                 </a>
@@ -379,12 +374,18 @@
         </p>
       </div>
 
-      <!-- Controles de Filtro -->
+      <!-- Controles de Filtro y Acción de Estudio -->
       <div class="portfolio-controls">
         <div class="filter-tabs">
           <button class="filter-btn active" data-filter="all">Todas las Obras</button>
           <button class="filter-btn" data-filter="hospitalaria">Arquitectura Sanitaria / Hospitalaria</button>
           <button class="filter-btn" data-filter="habitacional">Arquitectura Habitacional</button>
+        </div>
+        <div class="portfolio-actions">
+          <button class="btn btn-secondary btn-sm" id="portfolioAdminBtn" title="Cargar nueva obra al portafolio (Acceso Estudio)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            <span>+ Cargar Obra</span>
+          </button>
         </div>
       </div>
 
@@ -607,9 +608,10 @@
       <div class="footer-bottom">
         <div class="footer-bottom-copy">
           <p>&copy; 2026 Manestar + Avila Arquitectura. Todos los derechos reservados.</p>
-          <!-- Botón oculto para logueo y carga de obras -->
-          <button class="secret-admin-trigger" id="secretAdminTrigger" title="Acceso de gestión" aria-label="Portal de gestión">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <!-- Botón de acceso para gestión y carga de obras -->
+          <button class="secret-admin-trigger" id="secretAdminTrigger" title="Acceso exclusivo del estudio para cargar y gestionar obras (Atajo: Ctrl + Shift + A)" aria-label="Portal de gestión y carga de obras">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Acceso Estudio / Cargar Obras</span>
           </button>
         </div>
         <p style="font-size: 0.78rem;">Diseño y Rigor Arquitectónico</p>
