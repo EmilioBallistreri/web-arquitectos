@@ -6,7 +6,7 @@
 import { INITIAL_PROJECTS } from './projects-data.js';
 
 // Estado global de proyectos con persistencia en LocalStorage
-const STORAGE_KEY = 'ma_projects_db_v3';
+const STORAGE_KEY = 'ma_projects_db_v6';
 
 function getStoredProjects() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -668,42 +668,44 @@ function initPhotoCover() {
     totalNumEl.textContent = String(COVER_PHOTOS.length).padStart(2, '0');
   }
 
-  function setCoverPhoto(idx) {
+  function setCoverPhoto(idx, isInitial = false) {
     if (idx < 0) idx = COVER_PHOTOS.length - 1;
     if (idx >= COVER_PHOTOS.length) idx = 0;
     currentCoverIdx = idx;
 
     const photo = COVER_PHOTOS[currentCoverIdx];
 
-    // Actualizar Contador editorial (ej: 01 / 05)
+    // Actualizar Contador editorial si existe
     if (currentNumEl) {
       currentNumEl.textContent = String(currentCoverIdx + 1).padStart(2, '0');
     }
 
-    // Actualizar textos y metadatos de la obra
+    // Actualizar textos y metadatos si existen
     if (captionEl) captionEl.textContent = photo.title;
     if (subEl) subEl.textContent = photo.sub || photo.tag;
 
-    // Transición suave de fondo con efecto zoom cinematográfico continuo
-    bgEl.style.opacity = '0.35';
-    bgEl.classList.remove('zoom-effect');
-
-    const tempImg = new Image();
-    tempImg.src = photo.url;
-    tempImg.onload = () => {
+    if (isInitial) {
       bgEl.style.backgroundImage = `url('${photo.url}')`;
       bgEl.style.opacity = '1';
       bgEl.classList.add('zoom-effect');
-    };
-
-    // Actualizar barra de progreso lineal de auto-rotación
-    if (progressFill) {
-      progressFill.style.transition = 'none';
-      progressFill.style.width = '0%';
-      void progressFill.offsetWidth;
-      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
-      progressFill.style.width = '100%';
+      return;
     }
+
+    // Transición suave entre imágenes
+    const tempImg = new Image();
+    tempImg.src = photo.url;
+    tempImg.onload = () => {
+      bgEl.style.opacity = '0.75';
+      setTimeout(() => {
+        bgEl.style.backgroundImage = `url('${photo.url}')`;
+        bgEl.style.opacity = '1';
+        bgEl.classList.add('zoom-effect');
+      }, 120);
+    };
+    tempImg.onerror = () => {
+      bgEl.style.backgroundImage = `url('${photo.url}')`;
+      bgEl.style.opacity = '1';
+    };
   }
 
   function nextCoverPhoto() {
@@ -775,8 +777,8 @@ function initPhotoCover() {
     startCoverTimer();
   }
 
-  // Foto inicial (Centro Médico SISS en índice 0 o aleatorio)
-  setCoverPhoto(0);
+  // Foto inicial (Centro Médico SISS en índice 0)
+  setCoverPhoto(0, true);
   startCoverTimer();
 }
 
