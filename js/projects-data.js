@@ -115,7 +115,7 @@ El pórtico de acceso monumental genera una transición amable entre el entorno 
     location: "Rosario, Santa Fe",
     surface: "4.900 m²",
     use: "Salud / Diagnóstico por Imágenes",
-    image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+    image: "assets/wellness-reception.jpg",
     summary: "Reconversión de un edificio patrimonial para albergar tecnología médica de última generación con circulaciones fluidas y accesibilidad universal.",
     memoriaDescriptiva: `Reconversión integral de edificio para albergar equipamiento de diagnóstico de alta complejidad, optimizando el flujo de pacientes ambulatorios y la bioseguridad del personal.`,
     details: {
@@ -129,8 +129,8 @@ El pórtico de acceso monumental genera una transición amable entre el entorno 
         { label: "Superficie", value: "4.900 m²" }
       ],
       gallery: [
-        "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80"
+        "assets/wellness-reception.jpg",
+        "assets/villa-dolores-night.jpg"
       ]
     }
   },
@@ -145,7 +145,7 @@ El pórtico de acceso monumental genera una transición amable entre el entorno 
     location: "Mendoza, Argentina",
     surface: "12.000 m²",
     use: "Residencial / Desarrollo Multifamiliar",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
+    image: "assets/cat-residenciales.jpg",
     summary: "Desarrollo residencial de baja densidad articulado en torno a un parque central con vegetación xerófila y terrazas escalonadas.",
     memoriaDescriptiva: `Conjunto habitacional sustentable estructurado alrededor de pulmones verdes nativos y eficiencia bioclimática con vistas a la cordillera.`,
     details: {
@@ -159,8 +159,8 @@ El pórtico de acceso monumental genera una transición amable entre el entorno 
         { label: "Amenities", value: "Gimnasio, SUM, Cava y Spa" }
       ],
       gallery: [
-        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=1200&q=80"
+        "assets/cat-residenciales.jpg",
+        "assets/siss-cover.jpg"
       ]
     }
   }
