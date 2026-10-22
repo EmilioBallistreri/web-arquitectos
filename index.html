@@ -38,7 +38,7 @@
       <nav>
         <ul class="nav-links">
           <li><a href="#proyectos" class="nav-link">PROYECTOS</a></li>
-          <li><a href="#nosotros" class="nav-link">NOSOTROS</a></li>
+          <li><a href="nosotros.html" class="nav-link">NOSOTROS</a></li>
           <li><a href="#que-hacemos" class="nav-link">QUÉ HACEMOS</a></li>
           <li><a href="#contacto" class="nav-link">CONTACTO</a></li>
         </ul>
@@ -64,7 +64,8 @@
        ========================================================================== -->
   <section class="photo-cover-section full-screen-cover" id="portada">
     <div class="photo-cover-slider" id="photoCoverSlider">
-      <div class="photo-cover-bg" id="photoCoverBg" style="background-image: url('assets/siss-hero.jpg');"></div>
+      <div class="photo-cover-bg layer-a active" id="photoCoverBgA" style="background-image: url('assets/siss-hero.jpg');"></div>
+      <div class="photo-cover-bg layer-b" id="photoCoverBgB"></div>
       <div class="photo-cover-overlay"></div>
     </div>
 
@@ -81,7 +82,6 @@
        Fondo de obra detrás de faja blanca con logo, texto y foto B&W de ambos arquitectos
        ========================================================================== -->
   <section class="about-hero-section" id="nosotros">
-    <div class="about-hero-backdrop"></div>
     <div class="about-white-band">
       <div class="container about-band-container">
         <!-- Columna Izquierda: Logo y Leyenda de Especialidad -->
@@ -93,8 +93,8 @@
             Estudio De Arquitectura<br>
             <span class="about-band-subtitle">Especializado En Arquitectura Para La Salud<br>Y En Diagnostico Por Imagen</span>
           </h2>
-          <a href="#nosotros-detalle" class="about-band-link" id="btnConocenos">
-            <span>conocenos</span>
+          <a href="nosotros.html" class="about-band-link" id="btnConocenos" aria-label="Conocer más sobre nuestro estudio">
+            <span>ver más</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -113,34 +113,13 @@
             </div>
             <div class="architect-portrait-col">
               <div class="architect-portrait-wrap">
-                <img src="assets/arquitecto.jpg" alt="Arq. Emmanuel Ávila" class="architect-portrait-img">
+                <img src="assets/emmanuel-avila.jpg" alt="Arq. Emmanuel Ávila" class="architect-portrait-img">
               </div>
               <div class="architect-caption">
                 <h3 class="architect-caption-name">Arq. Emmanuel Ávila</h3>
                 <span class="architect-caption-role">Socio Titular</span>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bloque Desplegable / Complementario de Nosotros -->
-    <div class="about-detail-drawer" id="nosotros-detalle">
-      <div class="container">
-        <div class="about-detail-grid">
-          <div class="about-detail-quote">
-            <blockquote>
-              "Un hospital no es solo un edificio técnico; es un entorno terapéutico donde la circulación, la luz y la bioseguridad salvan vidas."
-            </blockquote>
-          </div>
-          <div class="about-detail-text">
-            <p>
-              En <strong>Manestar + Avila</strong> abordamos la arquitectura sanitaria y habitacional desde un enfoque multidisciplinario. Nuestro equipo combina arquitectos especialistas en planificación médica, diseño de quirófanos y áreas de diagnóstico por imagen, con un riguroso dominio del modelado <strong>BIM</strong> y normativas internacionales.
-            </p>
-            <p>
-              Integramos los principios del <strong>Wellness</strong> en cada etapa proyectual, transformando espacios sanitarios tradicionalmente fríos e intimidantes en entornos de calma, calidez y bienestar tanto para pacientes como para el equipo médico.
-            </p>
           </div>
         </div>
       </div>
@@ -160,92 +139,28 @@
 
     <!-- SOLO DOS BOTONES AJUSTADOS AL ANCHO DE LA PÁGINA (PÁGINA 3) -->
     <div class="specialties-split-banner">
-      <button class="specialty-btn-card active" id="btnCatSalud" data-category="salud" aria-label="Ver obras de Arquitectura Para la Salud">
+      <a href="proyectos.html?categoria=salud" class="specialty-btn-card" id="btnCatSalud" data-category="salud" aria-label="Ver obras de Arquitectura Para la Salud">
         <img src="assets/cat-salud.jpg" alt="Arquitectura Para la Salud" class="specialty-bg-img">
         <div class="specialty-overlay"></div>
         <div class="specialty-content">
           <span class="specialty-eyebrow">Especialidad Principal</span>
-          <h3 class="specialty-name">ARQUITECTURA PARA LA SALUD</h3>
+          <h3 class="specialty-name">ARQUITECTURA<br>PARA LA SALUD</h3>
           <span class="specialty-action">Explorar obras →</span>
         </div>
-      </button>
+      </a>
 
-      <button class="specialty-btn-card" id="btnCatResidenciales" data-category="residenciales" aria-label="Ver obras Residenciales">
+      <a href="proyectos.html?categoria=residenciales" class="specialty-btn-card" id="btnCatResidenciales" data-category="residenciales" aria-label="Ver obras Residenciales">
         <img src="assets/cat-residenciales.jpg" alt="Residenciales" class="specialty-bg-img">
         <div class="specialty-overlay"></div>
         <div class="specialty-content">
           <span class="specialty-eyebrow">Diseño Contemporáneo</span>
-          <h3 class="specialty-name">RESIDENCIALES</h3>
+          <h3 class="specialty-name">OBRAS Y PROYECTOS<br>RESIDENCIALES</h3>
           <span class="specialty-action">Explorar obras →</span>
         </div>
-      </button>
-    </div>
-
-    <!-- ==========================================================================
-         4. LISTADO DE OBRAS (PÁGINA 4 DEL PDF)
-         Portada de cada obra como botón para desplegar más datos
-         ========================================================================== -->
-    <div class="projects-catalog-wrap" id="catalogoObras">
-      <div class="container">
-        <div class="catalog-top-bar">
-          <div class="catalog-category-indicator">
-            <span class="catalog-section-badge">• OBRAS Y PROYECTOS</span>
-            <h3 class="catalog-current-heading" id="currentCategoryHeading">ARQUITECTURA PARA LA SALUD</h3>
-            <p class="catalog-current-desc" id="currentCategoryDesc">Haga clic en la fotografía de cada obra para desplegar su memoria descriptiva y galería de imágenes.</p>
-          </div>
-
-          <div class="catalog-filter-pills">
-            <button class="filter-pill active" data-filter="salud">Arquitectura Para la Salud</button>
-            <button class="filter-pill" data-filter="residenciales">Residenciales</button>
-            <button class="filter-pill" data-filter="all">Todas las Obras</button>
-          </div>
-        </div>
-
-        <!-- Grilla de obras inyectada dinámicamente -->
-        <div class="projects-grid-editorial" id="projectsGrid">
-          <!-- Renderizado por JS -->
-        </div>
-      </div>
+      </a>
     </div>
   </section>
 
-  <!-- ==========================================================================
-       5. WELLNESS (BIENESTAR) / LINEAMIENTOS PROYECTUALES (PÁGINAS 6 Y 7 DEL PDF)
-       ========================================================================== -->
-  <section class="wellness-banner-section" id="wellness">
-    <div class="wellness-bg-wrapper">
-      <img src="assets/wellness-reception.jpg" alt="Recepción Centro Diagnóstico Wellness" class="wellness-bg-img">
-      <div class="wellness-bg-overlay"></div>
-    </div>
-
-    <div class="container wellness-container">
-      <div class="wellness-top-strip">
-        <span class="wellness-strip-tag">LINEAMIENTOS PROYECTUALES</span>
-        <span class="wellness-strip-divider">|</span>
-        <span class="wellness-strip-highlight">WELLNESS (BIENESTAR)</span>
-      </div>
-
-      <div class="wellness-quotes-block">
-        <blockquote class="wellness-quote-main">
-          "Transformamos la experiencia médica a través del diseño:<br>
-          espacios que no solo se ven bien, sino que te hacen bien."
-        </blockquote>
-        <p class="wellness-quote-sub">
-          "Arquitectura pensada para elevar la calidad de tu atención médica."
-        </p>
-        <p class="wellness-quote-desc">
-          Entendemos el espacio físico arquitectónico como un agente activo en el proceso de curación y bienestar.
-        </p>
-
-
-      <div class="wellness-cta-row">
-        <button class="wellness-more-btn" id="openWellnessModalBtn" aria-label="Conocer más sobre Wellness y Bienestar en Arquitectura">
-          <span>conoce más</span>
-          <span class="wellness-flower-icon">✻</span>
-        </button>
-      </div>
-    </div>
-  </section>
 
   <!-- ==========================================================================
        6. QUÉ HACEMOS: SERVICIOS CON ACORDEÓN VERTICAL (PÁGINAS 8 A 11 DEL PDF)
@@ -400,7 +315,10 @@
               </div>
               <div class="channel-content">
                 <h4>Teléfonos de Contacto</h4>
-                <p><a href="tel:3516652493">3516652493</a> / <a href="tel:3513908797">3513908797</a></p>
+                <p>
+                  <a href="https://wa.me/5493516652493?text=Hola,%20me%20comunico%20desde%20la%20web%20de%20Manestar%20%2B%20Avila%20Arquitectura" target="_blank" rel="noopener noreferrer">351 665 2493</a> / 
+                  <a href="https://wa.me/5493513908797?text=Hola,%20me%20comunico%20desde%20la%20web%20de%20Manestar%20%2B%20Avila%20Arquitectura" target="_blank" rel="noopener noreferrer">351 390 8797</a>
+                </p>
               </div>
             </div>
           </div>
@@ -501,9 +419,9 @@
           <h4 class="footer-col-title">INFO</h4>
           <ul class="footer-col-links">
             <li><a href="#portada">Inicio</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#proyectos">Proyectos</a></li>
-            <li><a href="#wellness">Lineamientos Proyectuales</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="nosotros.html#wellness">Lineamientos Proyectuales (Wellness)</a></li>
             <li><a href="#que-hacemos">Qué Hacemos</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
@@ -513,10 +431,10 @@
         <div class="footer-nav-col">
           <h4 class="footer-col-title">ESPECIALIDADES</h4>
           <ul class="footer-col-links">
-            <li><a href="#proyectos">Arquitectura Para la Salud</a></li>
-            <li><a href="#proyectos">Diagnóstico por Imágenes</a></li>
-            <li><a href="#proyectos">Quirófanos & Áreas Críticas</a></li>
-            <li><a href="#proyectos">Residenciales Contemporáneos</a></li>
+            <li><a href="proyectos.html?categoria=salud">Arquitectura Para la Salud</a></li>
+            <li><a href="proyectos.html?categoria=salud">Diagnóstico por Imágenes</a></li>
+            <li><a href="proyectos.html?categoria=salud">Quirófanos & Áreas Críticas</a></li>
+            <li><a href="proyectos.html?categoria=residenciales">Residenciales Contemporáneos</a></li>
             <li><a href="#que-hacemos">Interiorismo Clínico</a></li>
           </ul>
         </div>
@@ -526,8 +444,8 @@
           <h4 class="footer-col-title">CONTACTO</h4>
           <ul class="footer-col-links">
             <li><a href="mailto:info@manestaravila.com.ar" class="footer-highlight-link">info@manestaravila.com.ar</a></li>
-            <li><a href="tel:3516652493">351 665 2493</a></li>
-            <li><a href="tel:3513908797">351 390 8797</a></li>
+            <li><a href="https://wa.me/5493516652493?text=Hola,%20me%20comunico%20desde%20la%20web%20de%20Manestar%20%2B%20Avila%20Arquitectura" target="_blank" rel="noopener noreferrer">351 665 2493</a></li>
+            <li><a href="https://wa.me/5493513908797?text=Hola,%20me%20comunico%20desde%20la%20web%20de%20Manestar%20%2B%20Avila%20Arquitectura" target="_blank" rel="noopener noreferrer">351 390 8797</a></li>
             <li class="footer-info-item">Córdoba, Argentina</li>
             <li class="footer-info-sub">Atención a proyectos en todo el país</li>
           </ul>
@@ -568,64 +486,6 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       MODAL 2: WELLNESS (BIENESTAR) - PÁGINA 7 DEL PDF
-       ========================================================================== -->
-  <div class="modal-backdrop" id="wellnessDetailModal" aria-hidden="true" role="dialog">
-    <div class="modal-window modal-window-lg">
-      <button class="modal-close-btn" id="closeWellnessModal" aria-label="Cerrar ventana de Wellness">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <div class="wellness-modal-body">
-        <div class="wellness-modal-header">
-          <div class="wellness-modal-badge">
-            <span class="wellness-flower-icon">✻</span>
-            <span>WELLNESS (BIENESTAR)</span>
-          </div>
-          <h2 class="wellness-modal-quote">
-            "Diseñamos espacios que no solo se ven bien, sino que te hacen bien."
-          </h2>
-        </div>
-
-        <div class="wellness-modal-grid">
-          <div class="wellness-modal-text-col">
-            <p>
-              En la arquitectura contemporánea, especialmente en el ámbito de la salud y el diagnóstico por imagen, el término wellness (bienestar) para nosotros, ha dejado de ser una tendencia para convertirse en un lineamiento proyectual indispensable.
-            </p>
-            <p>
-              Aplicar el enfoque wellness al diseño de espacios médicos significa proyectar no solo para la funcionalidad técnica y el flujo clínico, sino para el bienestar integral de la persona: pacientes, acompañantes y el equipo de salud.
-            </p>
-            <p>
-              En centros de diagnóstico y entornos sanitarios, el estrés y la ansiedad suelen estar presentes. Nuestro compromiso proyectual busca transformar esa experiencia a través de la arquitectura.
-            </p>
-            <p>
-              En nuestro estudio comprendemos que la arquitectura médica va mucho más allá de la funcionalidad técnica. Cuando se trata de Diagnóstico por Imagen, nos enfrentamos a un doble desafío: albergar tecnología de alta complejidad y, al mismo tiempo, gestionar la alta vulnerabilidad emocional con la que los pacientes se enfrentan a estos estudios. Por ello, integramos los principios del Wellness en cada etapa del diseño arquitectónico, transformando entornos tradicionalmente fríos e intimidantes en espacios de bienestar, calma y confianza.
-            </p>
-          </div>
-
-          <div class="wellness-modal-graphic-col">
-            <div class="wellness-wheel-wrapper" id="wellnessWheelTrigger" title="Ampliar gráfico de dimensiones Wellness">
-              <img src="assets/wellness-wheel.jpg" alt="Rueda de las 8 dimensiones del Wellness en Salud" class="wellness-wheel-img">
-              <span class="wheel-zoom-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                Ampliar gráfico
-              </span>
-            </div>
-            <div class="wellness-dimensions-chips">
-              <span class="chip-item">Física</span>
-              <span class="chip-item">Emocional</span>
-              <span class="chip-item">Financiero</span>
-              <span class="chip-item">Mental</span>
-              <span class="chip-item">Laboral</span>
-              <span class="chip-item">Ambiental</span>
-              <span class="chip-item">Espiritual</span>
-              <span class="chip-item">Social</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ==========================================================================
        MODAL VISOR DE IMÁGENES / LIGHTBOX (AMPLIAR FOTOS EN ALTA RESOLUCIÓN)

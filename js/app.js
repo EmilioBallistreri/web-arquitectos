@@ -82,20 +82,26 @@ function initSpecialtyButtons() {
   const catalogoSection = document.getElementById('catalogoObras');
 
   if (btnSalud) {
-    btnSalud.addEventListener('click', () => {
-      setSpecialtyCategory('salud');
-      if (catalogoSection) {
-        catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    btnSalud.addEventListener('click', (e) => {
+      if (!catalogoSection) {
+        // Enlace natural a proyectos.html?categoria=salud
+        return;
       }
+      e.preventDefault();
+      setSpecialtyCategory('salud');
+      catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
   if (btnResidenciales) {
-    btnResidenciales.addEventListener('click', () => {
-      setSpecialtyCategory('residenciales');
-      if (catalogoSection) {
-        catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    btnResidenciales.addEventListener('click', (e) => {
+      if (!catalogoSection) {
+        // Enlace natural a proyectos.html?categoria=residenciales
+        return;
       }
+      e.preventDefault();
+      setSpecialtyCategory('residenciales');
+      catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 }
@@ -123,7 +129,7 @@ function setSpecialtyCategory(cat) {
       headingEl.textContent = 'ARQUITECTURA PARA LA SALUD';
       if (descEl) descEl.textContent = 'Infraestructura hospitalaria, diagnóstico por imágenes de alta complejidad y centros médicos.';
     } else if (cat === 'residenciales') {
-      headingEl.textContent = 'RESIDENCIALES';
+      headingEl.textContent = 'OBRAS Y PROYECTOS RESIDENCIALES';
       if (descEl) descEl.textContent = 'Viviendas contemporáneas de diseño a medida, arquitectura bioclimática y armonía espacial.';
     } else {
       headingEl.textContent = 'TODAS LAS OBRAS';
@@ -135,14 +141,34 @@ function setSpecialtyCategory(cat) {
 }
 
 function initPortfolio() {
-  renderProjects();
+  // Leer categoría desde parámetros URL (?categoria=salud o ?categoria=residenciales) o hash (#salud)
+  const urlParams = new URLSearchParams(window.location.search);
+  const catParam = urlParams.get('categoria') || urlParams.get('cat');
+  const hashParam = window.location.hash ? window.location.hash.replace('#', '') : null;
+  const initialCat = catParam || (['salud', 'residenciales', 'all'].includes(hashParam) ? hashParam : null);
+
+  if (initialCat) {
+    activeFilter = initialCat;
+  }
+
+  setSpecialtyCategory(activeFilter);
 
   const filterPills = document.querySelectorAll('.filter-pill');
   filterPills.forEach(pill => {
     pill.addEventListener('click', () => {
       const cat = pill.dataset.filter;
       setSpecialtyCategory(cat);
+      if (window.history && window.history.pushState) {
+        const newUrl = window.location.pathname + '?categoria=' + cat;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      }
     });
+  });
+
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('categoria') || params.get('cat') || 'salud';
+    setSpecialtyCategory(cat);
   });
 }
 
@@ -164,19 +190,14 @@ function renderProjects() {
     return;
   }
 
-  // Página 4 del PDF: una foto como portada de cada obra y esa sea el botón para desplegar más datos de esa obra
+  // Página 4 del PDF: una foto como portada de cada obra con solo el nombre del proyecto como botón para desplegar más datos
   grid.innerHTML = filtered.map(proj => `
-    <article class="project-card-editorial" data-id="${proj.id}">
+    <article class="project-card-editorial" data-id="${proj.id}" title="${escapeHtml(proj.title)}">
       <div class="project-cover-wrap">
         <img src="${proj.image}" alt="${escapeHtml(proj.title)}" loading="lazy" class="project-cover-img" onerror="this.src='assets/siss-hero.jpg'">
         <div class="project-cover-gradient"></div>
         <div class="project-cover-info">
-          <span class="project-cover-badge">${escapeHtml(proj.categoryLabel || (proj.category === 'salud' ? 'Arquitectura Para la Salud' : 'Residenciales'))}</span>
           <h3 class="project-cover-title">${escapeHtml(proj.shortTitle || proj.title)}</h3>
-          <span class="project-cover-action">
-            <span>Ver memoria descriptiva & fotos</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </span>
         </div>
       </div>
     </article>
@@ -623,28 +644,28 @@ const COVER_PHOTOS = [
     sub: "Arquitectura Para la Salud — Córdoba"
   },
   {
-    url: "assets/villa-dolores-night.jpg",
-    title: "Centro de Diagnóstico e Imágenes Médicas Villa Dolores",
-    tag: "Salud / Diagnóstico por Imágenes",
-    sub: "Fachada Vidriada y Hall a Doble Altura Iluminado"
-  },
-  {
     url: "assets/villa-dolores-facade.jpg",
     title: "Centro Diagnóstico por Imágenes Villa Dolores",
     tag: "Arquitectura Para la Salud",
     sub: "Piel Metálica Microperforada de Planos Desplazados"
   },
   {
-    url: "assets/cat-salud.jpg",
-    title: "Arquitectura Para la Salud",
-    tag: "Especialidad en Salud",
-    sub: "Envolventes Arquitectónicas & Rigor Bioseguro"
+    url: "assets/villa-dolores-night.jpg",
+    title: "Centro de Diagnóstico e Imágenes Médicas Villa Dolores",
+    tag: "Salud / Diagnóstico por Imágenes",
+    sub: "Fachada Vidriada y Hall a Doble Altura Iluminado"
   },
   {
-    url: "assets/cat-residenciales.jpg",
-    title: "Residenciales Contemporáneos",
-    tag: "Arquitectura Residencial",
-    sub: "Viviendas Unifamiliares con Eficiencia Bioclimática"
+    url: "assets/wellness-reception.jpg",
+    title: "Centro de Diagnóstico por Imágenes & Ambulatorio",
+    tag: "Salud / Diagnóstico por Imágenes",
+    sub: "Recepción Integral y Humanización de Espacios Médicos"
+  },
+  {
+    url: "assets/siss-cover.jpg",
+    title: "Infraestructura Médica de Alta Complejidad",
+    tag: "Arquitectura Para la Salud",
+    sub: "Diseño Funcional, Bioseguridad y Vanguardia"
   }
 ];
 
@@ -652,21 +673,13 @@ let currentCoverIdx = 0;
 let coverAutoTimer = null;
 
 function initPhotoCover() {
-  const bgEl = document.getElementById('photoCoverBg');
-  const captionEl = document.getElementById('coverPhotoCaption');
-  const subEl = document.getElementById('coverPhotoSub');
-  const currentNumEl = document.getElementById('coverCurrentNum');
-  const totalNumEl = document.getElementById('coverTotalNum');
-  const progressFill = document.getElementById('coverProgressFill');
-  const prevBtn = document.getElementById('coverPrevBtn');
-  const nextBtn = document.getElementById('coverNextBtn');
-  const randomBtn = document.getElementById('coverRandomBtn');
+  const bgA = document.getElementById('photoCoverBgA');
+  const bgB = document.getElementById('photoCoverBgB');
+  const fallbackBg = document.getElementById('photoCoverBg');
 
-  if (!bgEl) return;
+  if (!bgA && !fallbackBg) return;
 
-  if (totalNumEl) {
-    totalNumEl.textContent = String(COVER_PHOTOS.length).padStart(2, '0');
-  }
+  let activeIsA = true;
 
   function setCoverPhoto(idx, isInitial = false) {
     if (idx < 0) idx = COVER_PHOTOS.length - 1;
@@ -675,36 +688,36 @@ function initPhotoCover() {
 
     const photo = COVER_PHOTOS[currentCoverIdx];
 
-    // Actualizar Contador editorial si existe
-    if (currentNumEl) {
-      currentNumEl.textContent = String(currentCoverIdx + 1).padStart(2, '0');
-    }
-
-    // Actualizar textos y metadatos si existen
-    if (captionEl) captionEl.textContent = photo.title;
-    if (subEl) subEl.textContent = photo.sub || photo.tag;
-
     if (isInitial) {
-      bgEl.style.backgroundImage = `url('${photo.url}')`;
-      bgEl.style.opacity = '1';
-      bgEl.classList.add('zoom-effect');
+      if (bgA) {
+        bgA.style.backgroundImage = `url('${photo.url}')`;
+        bgA.classList.add('active');
+      } else if (fallbackBg) {
+        fallbackBg.style.backgroundImage = `url('${photo.url}')`;
+      }
       return;
     }
 
-    // Transición suave entre imágenes
-    const tempImg = new Image();
-    tempImg.src = photo.url;
-    tempImg.onload = () => {
-      bgEl.style.opacity = '0.75';
-      setTimeout(() => {
-        bgEl.style.backgroundImage = `url('${photo.url}')`;
-        bgEl.style.opacity = '1';
-        bgEl.classList.add('zoom-effect');
-      }, 120);
-    };
-    tempImg.onerror = () => {
-      bgEl.style.backgroundImage = `url('${photo.url}')`;
-      bgEl.style.opacity = '1';
+    // Preload next image before smooth crossfade
+    const preloader = new Image();
+    preloader.src = photo.url;
+    preloader.onload = () => {
+      if (bgA && bgB) {
+        const incoming = activeIsA ? bgB : bgA;
+        const outgoing = activeIsA ? bgA : bgB;
+
+        incoming.style.backgroundImage = `url('${photo.url}')`;
+        incoming.classList.add('active');
+        outgoing.classList.remove('active');
+
+        activeIsA = !activeIsA;
+      } else if (fallbackBg) {
+        fallbackBg.style.opacity = '0.75';
+        setTimeout(() => {
+          fallbackBg.style.backgroundImage = `url('${photo.url}')`;
+          fallbackBg.style.opacity = '1';
+        }, 120);
+      }
     };
   }
 
@@ -712,69 +725,11 @@ function initPhotoCover() {
     setCoverPhoto(currentCoverIdx + 1);
   }
 
-  function prevCoverPhoto() {
-    setCoverPhoto(currentCoverIdx - 1);
-  }
-
-  function randomCoverPhoto() {
-    let nextIdx;
-    do {
-      nextIdx = Math.floor(Math.random() * COVER_PHOTOS.length);
-    } while (nextIdx === currentCoverIdx && COVER_PHOTOS.length > 1);
-    setCoverPhoto(nextIdx);
-
-    if (randomBtn) {
-      const svg = randomBtn.querySelector('svg');
-      if (svg) {
-        svg.style.transition = 'transform 0.4s ease';
-        svg.style.transform = 'rotate(180deg)';
-        setTimeout(() => {
-          svg.style.transform = '';
-        }, 400);
-      }
-    }
-  }
-
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      prevCoverPhoto();
-      restartCoverTimer();
-    });
-  }
-
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      nextCoverPhoto();
-      restartCoverTimer();
-    });
-  }
-
-  if (randomBtn) {
-    randomBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      randomCoverPhoto();
-      restartCoverTimer();
-    });
-  }
-
   function startCoverTimer() {
-    if (progressFill) {
-      progressFill.style.transition = 'none';
-      progressFill.style.width = '0%';
-      void progressFill.offsetWidth;
-      progressFill.style.transition = `width ${COVER_ROTATION_MS}ms linear`;
-      progressFill.style.width = '100%';
-    }
+    if (coverAutoTimer) clearInterval(coverAutoTimer);
     coverAutoTimer = setInterval(() => {
       nextCoverPhoto();
     }, COVER_ROTATION_MS);
-  }
-
-  function restartCoverTimer() {
-    clearInterval(coverAutoTimer);
-    startCoverTimer();
   }
 
   // Foto inicial (Centro Médico SISS en índice 0)
