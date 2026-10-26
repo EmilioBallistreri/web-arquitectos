@@ -6,7 +6,7 @@
 import { INITIAL_PROJECTS } from './projects-data.js';
 
 // Estado global de proyectos con persistencia en LocalStorage
-const STORAGE_KEY = 'ma_projects_db_v6';
+const STORAGE_KEY = 'ma_projects_db_v8';
 
 function getStoredProjects() {
   const saved = localStorage.getItem(STORAGE_KEY);
@@ -48,6 +48,8 @@ function initNavbar() {
   const header = document.querySelector('.site-header');
   const mobileToggle = document.getElementById('mobileMenuToggle');
   const navLinks = document.querySelector('.nav-links');
+  const navDropdown = document.querySelector('.nav-item-dropdown');
+  const navProyectosLink = document.getElementById('navProyectosLink');
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 40) {
@@ -62,19 +64,48 @@ function initNavbar() {
       navLinks.classList.toggle('mobile-open');
     });
 
-    // Cerrar menú al hacer clic en un enlace
-    document.querySelectorAll('.nav-link').forEach(link => {
+    // Cerrar menú al hacer clic en un enlace simple
+    document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
       link.addEventListener('click', () => {
         navLinks.classList.remove('mobile-open');
       });
     });
   }
+
+  // En móvil: alternar menú desplegable al pulsar "PROYECTOS"
+  if (navProyectosLink && navDropdown) {
+    navProyectosLink.addEventListener('click', (e) => {
+      if (window.innerWidth <= 992) {
+        e.preventDefault();
+        navDropdown.classList.toggle('open');
+      }
+    });
+  }
+
+  // Interceptar clics en los enlaces del dropdown de Proyectos
+  document.querySelectorAll('.dropdown-item-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const cat = link.dataset.category;
+      const isProjectsPage = window.location.pathname.endsWith('proyectos.html') || window.location.pathname.endsWith('/proyectos') || !!document.getElementById('catalogoObras');
+      
+      if (isProjectsPage && cat) {
+        e.preventDefault();
+        setSpecialtyCategory(cat, true);
+        if (window.history && window.history.pushState) {
+          const newUrl = window.location.pathname + '?categoria=' + cat;
+          window.history.pushState({ path: newUrl }, '', newUrl);
+        }
+        if (navLinks) navLinks.classList.remove('mobile-open');
+        if (navDropdown) navDropdown.classList.remove('open');
+      }
+    });
+  });
 }
 
 /* ==========================================================================
-   2. BOTONES DE ESPECIALIDAD (PÁGINA 3 DEL PDF) & PORTAFOLIO
+   2. BOTONES DE ESPECIALIDAD (PÁGINA 3 DEL PDF) & SECCIONES APARTES DE PROYECTOS
    ========================================================================== */
-let activeFilter = 'salud'; // 'salud' por defecto como en la maqueta
+let activeFilter = 'salud'; // 'salud' por defecto (Especialidad Principal)
 
 function initSpecialtyButtons() {
   const btnSalud = document.getElementById('btnCatSalud');
@@ -88,8 +119,7 @@ function initSpecialtyButtons() {
         return;
       }
       e.preventDefault();
-      setSpecialtyCategory('salud');
-      catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setSpecialtyCategory('salud', true);
     });
   }
 
@@ -100,98 +130,105 @@ function initSpecialtyButtons() {
         return;
       }
       e.preventDefault();
-      setSpecialtyCategory('residenciales');
-      catalogoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setSpecialtyCategory('residenciales', true);
+    });
+  }
+
+  // SELECTOR SUPERIOR DE SECCIONES APARTES EN proyectos.html
+  const btnSectionSalud = document.getElementById('btnSectionSalud');
+  const btnSectionResidenciales = document.getElementById('btnSectionResidenciales');
+
+  if (btnSectionSalud) {
+    btnSectionSalud.addEventListener('click', () => {
+      setSpecialtyCategory('salud', true);
+      if (window.history && window.history.pushState) {
+        const newUrl = window.location.pathname + '?categoria=salud';
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      }
+    });
+  }
+
+  if (btnSectionResidenciales) {
+    btnSectionResidenciales.addEventListener('click', () => {
+      setSpecialtyCategory('residenciales', true);
+      if (window.history && window.history.pushState) {
+        const newUrl = window.location.pathname + '?categoria=residenciales';
+        window.history.pushState({ path: newUrl }, '', newUrl);
+      }
     });
   }
 }
 
-function setSpecialtyCategory(cat) {
+function setSpecialtyCategory(cat, shouldScroll = false) {
+  // Aseguramos que solo haya una sección activa aparte ('salud' o 'residenciales')
+  if (cat !== 'residenciales') {
+    cat = 'salud';
+  }
   activeFilter = cat;
 
-  // Actualizar estado activo en los dos botones de la página 3
+  // Actualizar estado activo en los botones de portada (si existen)
   const btnSalud = document.getElementById('btnCatSalud');
   const btnResidenciales = document.getElementById('btnCatResidenciales');
   if (btnSalud) btnSalud.classList.toggle('active', cat === 'salud');
   if (btnResidenciales) btnResidenciales.classList.toggle('active', cat === 'residenciales');
 
-  // Actualizar pills del catálogo
-  const pills = document.querySelectorAll('.filter-pill');
-  pills.forEach(p => {
-    p.classList.toggle('active', p.dataset.filter === cat);
-  });
+  // Actualizar selector de secciones apartes en la parte superior de proyectos.html
+  const btnSectionSalud = document.getElementById('btnSectionSalud');
+  const btnSectionResidenciales = document.getElementById('btnSectionResidenciales');
+  if (btnSectionSalud) {
+    btnSectionSalud.classList.toggle('active', cat === 'salud');
+    btnSectionSalud.setAttribute('aria-pressed', cat === 'salud' ? 'true' : 'false');
+  }
+  if (btnSectionResidenciales) {
+    btnSectionResidenciales.classList.toggle('active', cat === 'residenciales');
+    btnSectionResidenciales.setAttribute('aria-pressed', cat === 'residenciales' ? 'true' : 'false');
+  }
 
-  // Actualizar encabezados
-  const headingEl = document.getElementById('currentCategoryHeading');
-  const descEl = document.getElementById('currentCategoryDesc');
-  if (headingEl) {
-    if (cat === 'salud') {
-      headingEl.textContent = 'ARQUITECTURA PARA LA SALUD';
-      if (descEl) descEl.textContent = 'Infraestructura hospitalaria, diagnóstico por imágenes de alta complejidad y centros médicos.';
-    } else if (cat === 'residenciales') {
-      headingEl.textContent = 'OBRAS Y PROYECTOS RESIDENCIALES';
-      if (descEl) descEl.textContent = 'Viviendas contemporáneas de diseño a medida, arquitectura bioclimática y armonía espacial.';
-    } else {
-      headingEl.textContent = 'TODAS LAS OBRAS';
-      if (descEl) descEl.textContent = 'Catálogo completo de proyectos desarrollados por Manestar + Avila.';
-    }
+  // Actualizar breadcrumb superior si existe
+  const breadcrumbCat = document.getElementById('projectsHeroBreadcrumbCategory');
+  if (breadcrumbCat) {
+    breadcrumbCat.textContent = cat === 'residenciales' ? 'Obras y Proyectos Residenciales' : 'Arquitectura Para la Salud';
   }
 
   renderProjects();
+
+  if (shouldScroll) {
+    const navSelector = document.getElementById('projectsSectionNav') || document.getElementById('catalogoObras');
+    if (navSelector) {
+      navSelector.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }
 
 function initPortfolio() {
-  // Leer categoría desde parámetros URL (?categoria=salud o ?categoria=residenciales) o hash (#salud)
+  // Leer categoría desde parámetros URL (?categoria=salud o ?categoria=residenciales) o hash
   const urlParams = new URLSearchParams(window.location.search);
   const catParam = urlParams.get('categoria') || urlParams.get('cat');
   const hashParam = window.location.hash ? window.location.hash.replace('#', '') : null;
-  const initialCat = catParam || (['salud', 'residenciales', 'all'].includes(hashParam) ? hashParam : null);
+  const initialCat = (catParam === 'residenciales' || hashParam === 'residenciales') ? 'residenciales' : 'salud';
 
-  if (initialCat) {
-    activeFilter = initialCat;
-  }
-
-  setSpecialtyCategory(activeFilter);
-
-  const filterPills = document.querySelectorAll('.filter-pill');
-  filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const cat = pill.dataset.filter;
-      setSpecialtyCategory(cat);
-      if (window.history && window.history.pushState) {
-        const newUrl = window.location.pathname + '?categoria=' + cat;
-        window.history.pushState({ path: newUrl }, '', newUrl);
-      }
-    });
-  });
+  activeFilter = initialCat;
+  setSpecialtyCategory(activeFilter, false);
 
   window.addEventListener('popstate', () => {
     const params = new URLSearchParams(window.location.search);
     const cat = params.get('categoria') || params.get('cat') || 'salud';
-    setSpecialtyCategory(cat);
+    setSpecialtyCategory(cat, true);
   });
 }
 
 function renderProjects() {
-  const grid = document.getElementById('projectsGrid');
-  if (!grid) return;
+  const gridSalud = document.getElementById('projectsGridSalud');
+  const gridResidenciales = document.getElementById('projectsGridResidenciales');
+  const genericGrid = document.getElementById('projectsGrid');
+  const secSalud = document.getElementById('subseccionSalud');
+  const secResidenciales = document.getElementById('subseccionResidenciales');
+  const divider = document.getElementById('subsectionsDivider');
 
   const projects = getStoredProjects();
-  const filtered = activeFilter === 'all' 
-    ? projects 
-    : projects.filter(p => p.category === activeFilter);
 
-  if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
-        <p style="font-size: 1.1rem;">No hay proyectos registrados en esta categoría aún.</p>
-      </div>
-    `;
-    return;
-  }
-
-  // Página 4 del PDF: una foto como portada de cada obra con solo el nombre del proyecto como botón para desplegar más datos
-  grid.innerHTML = filtered.map(proj => `
+  // Helper para generar tarjetas editoriales
+  const createCardHtml = (proj) => `
     <article class="project-card-editorial" data-id="${proj.id}" title="${escapeHtml(proj.title)}">
       <div class="project-cover-wrap">
         <img src="${proj.image}" alt="${escapeHtml(proj.title)}" loading="lazy" class="project-cover-img" onerror="this.src='assets/siss-hero.jpg'">
@@ -201,9 +238,50 @@ function renderProjects() {
         </div>
       </div>
     </article>
-  `).join('');
+  `;
 
-  // Event listeners para abrir detalle
+  // Si estamos en la página de proyectos con las subsecciones
+  if (gridSalud || gridResidenciales) {
+    const saludProjects = projects.filter(p => p.category === 'salud' || p.category === 'hospitalaria');
+    const residencialesProjects = projects.filter(p => p.category === 'residenciales' || p.category === 'habitacional');
+
+    if (gridSalud) {
+      gridSalud.innerHTML = saludProjects.length > 0
+        ? saludProjects.map(createCardHtml).join('')
+        : `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);"><p>No hay proyectos registrados en Arquitectura Para la Salud aún.</p></div>`;
+    }
+
+    if (gridResidenciales) {
+      gridResidenciales.innerHTML = residencialesProjects.length > 0
+        ? residencialesProjects.map(createCardHtml).join('')
+        : `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);"><p>No hay proyectos registrados en Obras Residenciales aún.</p></div>`;
+    }
+
+    // MANEJO DE SECCIONES APARTES: Mostrar exclusivamente la sección seleccionada
+    if (activeFilter === 'residenciales') {
+      if (secSalud) secSalud.style.display = 'none';
+      if (secResidenciales) secResidenciales.style.display = 'block';
+      if (divider) divider.style.display = 'none';
+    } else {
+      // 'salud' por defecto
+      if (secSalud) secSalud.style.display = 'block';
+      if (secResidenciales) secResidenciales.style.display = 'none';
+      if (divider) divider.style.display = 'none';
+    }
+  }
+
+  // Soporte para grilla genérica única
+  if (genericGrid) {
+    const filtered = activeFilter === 'all' 
+      ? projects 
+      : projects.filter(p => p.category === activeFilter || (activeFilter === 'salud' && p.category === 'hospitalaria') || (activeFilter === 'residenciales' && p.category === 'habitacional'));
+
+    genericGrid.innerHTML = filtered.length > 0
+      ? filtered.map(createCardHtml).join('')
+      : `<div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted);"><p style="font-size: 1.1rem;">No hay proyectos registrados en esta categoría aún.</p></div>`;
+  }
+
+  // Event listeners para abrir detalle de cada obra
   document.querySelectorAll('.project-card-editorial').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.dataset.id;
@@ -302,25 +380,39 @@ function openProjectDetail(id) {
         </div>
       </div>
 
-      <!-- SECCIÓN SCROLL PARA ABAJO PARA VER LAS IMÁGENES (PÁGINA 5) -->
+      <!-- SECCIÓN SCROLL PARA ABAJO PARA VER LAS IMÁGENES (DISTRIBUCIÓN 50 / 50) -->
       <div class="project-gallery-scroll-section">
         <div class="gallery-scroll-prompt">
           <span class="scroll-arrow-down">↓</span>
-          <span>DESLIZA HACIA ABAJO PARA VER LAS IMÁGENES</span>
+          <span>DESLIZA HACIA ABAJO PARA RECORRER LA OBRA</span>
         </div>
 
-        <div class="project-photos-stack">
-          ${allModalImages.map((imgUrl, i) => `
-            <div class="project-stack-photo-item" data-idx="${i}" title="Haz clic para ampliar">
-              <img src="${imgUrl}" alt="Vista ${i + 1} de ${escapeHtml(proj.title)}" class="stack-img" loading="lazy">
-              <div class="stack-photo-overlay">
-                <span class="stack-zoom-pill">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                  <span>Ampliar Vista ${i + 1}</span>
-                </span>
+        <!-- GRILLA DUAL 50 / 50 DE IMÁGENES -->
+        <div class="project-photos-dual-grid" id="projectPhotosDualGrid">
+          ${allModalImages.map((imgUrl, i) => {
+            const isSoloOdd = (allModalImages.length % 2 !== 0 && i === allModalImages.length - 1 && i !== 0);
+            return `
+            <div class="project-dual-photo-item ${isSoloOdd ? 'is-solo-odd' : ''}" data-idx="${i}" title="Haz clic para ampliar">
+              <div class="dual-photo-ratio-wrap">
+                <img src="${imgUrl}" alt="Vista ${i + 1} de ${escapeHtml(proj.title)}" class="dual-photo-img" loading="lazy" onerror="this.src='assets/siss-hero.jpg'">
+                <div class="dual-photo-overlay">
+                  <span class="dual-zoom-pill">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                    <span>Ampliar Vista ${i + 1}</span>
+                  </span>
+                </div>
               </div>
             </div>
-          `).join('')}
+            `;
+          }).join('')}
+        </div>
+
+        <!-- BOTÓN FLOTANTE / PERSISTENTE ESTILO A+R ARQUITECTOS (> BACK TO PORTFOLIO) -->
+        <div class="project-detail-bottom-nav">
+          <button type="button" class="btn-back-portfolio" id="btnBackToPortfolio" title="Volver al catálogo de obras">
+            <span class="back-arrow-symbol">&gt;</span>
+            <span class="back-text-underlined">BACK TO PORTFOLIO</span>
+          </button>
         </div>
       </div>
 
@@ -353,7 +445,7 @@ function openProjectDetail(id) {
   }
 
   // Listeners para ampliar fotos de la galería en lightbox
-  const photoItems = modalBody.querySelectorAll('.project-stack-photo-item');
+  const photoItems = modalBody.querySelectorAll('.project-dual-photo-item');
   photoItems.forEach(item => {
     item.addEventListener('click', () => {
       const idx = parseInt(item.dataset.idx, 10) || 0;
@@ -363,21 +455,282 @@ function openProjectDetail(id) {
     });
   });
 
+  // Listener para el botón > BACK TO PORTFOLIO
+  const backToPortfolioBtn = modalBody.querySelector('#btnBackToPortfolio');
+  if (backToPortfolioBtn) {
+    backToPortfolioBtn.addEventListener('click', () => {
+      modalBackdrop.classList.remove('active');
+    });
+  }
+
   modalBackdrop.classList.add('active');
 }
 
 /* ==========================================================================
-   4. CMS / CARGA DINÁMICA DE NUEVAS OBRAS
+   4. CMS / CARGA DINÁMICA DE NUEVAS OBRAS CON CARGA DE FOTOS & DROPZONE
    ========================================================================== */
+
+// Helper para optimizar y comprimir imágenes vía Canvas a DataURL ligero
+function processImageFile(file, maxWidth = 1600, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith('image/')) {
+      reject(new Error('El archivo no es una imagen válida.'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        const maxDim = maxWidth; // 1600px
+        if (width > maxDim || height > maxDim) {
+          if (width >= height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({
+          dataUrl,
+          name: file.name
+        });
+      };
+      img.onerror = () => reject(new Error('No se pudo decodificar la imagen.'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('Error al leer el archivo del dispositivo.'));
+    reader.readAsDataURL(file);
+  });
+}
+
 function initAdminModal() {
   const addProjectBtn = document.getElementById('openAddProjectModal');
   const modalBackdrop = document.getElementById('addProjectModal');
   const closeBtn = document.getElementById('closeAddModal');
   const form = document.getElementById('addProjectForm');
-  const presetSelector = document.getElementById('presetImageSelector');
 
   if (!modalBackdrop) return;
 
+  // Elementos de Portada (1 sola imagen)
+  const coverDropzone = document.getElementById('coverDropzone');
+  const coverFileInput = document.getElementById('coverFileInput');
+  const btnSelectCover = document.getElementById('btnSelectCover');
+  const coverEmptyState = document.getElementById('coverEmptyState');
+  const coverPreviewWrap = document.getElementById('coverPreviewWrap');
+  const coverPreviewImg = document.getElementById('coverPreviewImg');
+  const coverFileName = document.getElementById('coverFileName');
+  const btnRemoveCover = document.getElementById('btnRemoveCover');
+  const hiddenImageInput = document.getElementById('newProjImage');
+
+  // Elementos de Galería (hasta 10 imágenes)
+  const galleryDropzone = document.getElementById('galleryDropzone');
+  const galleryFileInput = document.getElementById('galleryFileInput');
+  const btnSelectGallery = document.getElementById('btnSelectGallery');
+  const galleryCounter = document.getElementById('galleryCounter');
+  const galleryPreviewsGrid = document.getElementById('galleryPreviewsGrid');
+
+  // Estado local de archivos cargados
+  let currentCover = null; // { dataUrl, name }
+  let currentGallery = []; // Array de { id, dataUrl, name }, máx. 10
+
+  function resetUploadStates() {
+    currentCover = null;
+    currentGallery = [];
+    if (hiddenImageInput) hiddenImageInput.value = '';
+    if (coverFileInput) coverFileInput.value = '';
+    if (galleryFileInput) galleryFileInput.value = '';
+    if (coverPreviewWrap) coverPreviewWrap.style.display = 'none';
+    if (coverEmptyState) coverEmptyState.style.display = 'flex';
+    if (galleryPreviewsGrid) {
+      galleryPreviewsGrid.innerHTML = '';
+      galleryPreviewsGrid.style.display = 'none';
+    }
+    if (galleryCounter) galleryCounter.textContent = '0 / 10 imágenes';
+  }
+
+  // --- Manejo de Imagen de Portada (1 sola imagen) ---
+  function setCoverImage(imageObj) {
+    currentCover = imageObj;
+    if (hiddenImageInput) hiddenImageInput.value = imageObj.dataUrl;
+    if (coverPreviewImg) coverPreviewImg.src = imageObj.dataUrl;
+    if (coverFileName) coverFileName.textContent = imageObj.name;
+    if (coverEmptyState) coverEmptyState.style.display = 'none';
+    if (coverPreviewWrap) coverPreviewWrap.style.display = 'block';
+  }
+
+  function removeCoverImage() {
+    currentCover = null;
+    if (hiddenImageInput) hiddenImageInput.value = '';
+    if (coverFileInput) coverFileInput.value = '';
+    if (coverPreviewWrap) coverPreviewWrap.style.display = 'none';
+    if (coverEmptyState) coverEmptyState.style.display = 'flex';
+  }
+
+  if (btnSelectCover && coverFileInput) {
+    btnSelectCover.addEventListener('click', (e) => {
+      e.stopPropagation();
+      coverFileInput.click();
+    });
+  }
+
+  if (btnRemoveCover) {
+    btnRemoveCover.addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeCoverImage();
+    });
+  }
+
+  if (coverFileInput) {
+    coverFileInput.addEventListener('change', async () => {
+      if (coverFileInput.files && coverFileInput.files[0]) {
+        try {
+          const processed = await processImageFile(coverFileInput.files[0]);
+          setCoverImage(processed);
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+    });
+  }
+
+  if (coverDropzone) {
+    coverDropzone.addEventListener('click', () => {
+      if (!currentCover && coverFileInput) {
+        coverFileInput.click();
+      }
+    });
+
+    coverDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      coverDropzone.classList.add('drag-over');
+    });
+
+    coverDropzone.addEventListener('dragleave', () => {
+      coverDropzone.classList.remove('drag-over');
+    });
+
+    coverDropzone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      coverDropzone.classList.remove('drag-over');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        try {
+          const processed = await processImageFile(e.dataTransfer.files[0]);
+          setCoverImage(processed);
+          showToast('Portada cargada con éxito.');
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+    });
+  }
+
+  // --- Manejo de Galería Fotográfica (máximo 10 imágenes) ---
+  function updateGalleryUI() {
+    if (galleryCounter) {
+      galleryCounter.textContent = `${currentGallery.length} / 10 imágenes`;
+    }
+
+    if (galleryPreviewsGrid) {
+      if (currentGallery.length === 0) {
+        galleryPreviewsGrid.innerHTML = '';
+        galleryPreviewsGrid.style.display = 'none';
+      } else {
+        galleryPreviewsGrid.style.display = 'grid';
+        galleryPreviewsGrid.innerHTML = currentGallery.map((item, idx) => `
+          <div class="gallery-thumb-item" title="${escapeHtml(item.name)}">
+            <img src="${item.dataUrl}" alt="Foto ${idx + 1}">
+            <button type="button" class="gallery-thumb-delete" data-idx="${idx}" title="Eliminar foto">✕</button>
+          </div>
+        `).join('');
+
+        galleryPreviewsGrid.querySelectorAll('.gallery-thumb-delete').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const idx = parseInt(btn.dataset.idx, 10);
+            currentGallery.splice(idx, 1);
+            updateGalleryUI();
+          });
+        });
+      }
+    }
+  }
+
+  async function addFilesToGallery(filesList) {
+    if (!filesList || filesList.length === 0) return;
+
+    const availableSlots = 10 - currentGallery.length;
+    if (availableSlots <= 0) {
+      showToast('Ya has alcanzado el límite máximo de 10 imágenes en la galería.', 'error');
+      return;
+    }
+
+    const filesArray = Array.from(filesList).filter(f => f.type.startsWith('image/'));
+    if (filesArray.length === 0) {
+      showToast('Por favor seleccione archivos de imagen válidos.', 'error');
+      return;
+    }
+
+    const filesToTake = filesArray.slice(0, availableSlots);
+    if (filesArray.length > availableSlots) {
+      showToast(`Se incorporaron las primeras ${availableSlots} fotos. El límite máximo de la galería es de 10 imágenes.`, 'info');
+    }
+
+    try {
+      const processedResults = await Promise.all(filesToTake.map(f => processImageFile(f)));
+      processedResults.forEach(res => {
+        currentGallery.push(res);
+      });
+      updateGalleryUI();
+    } catch (err) {
+      showToast('Error al procesar las imágenes: ' + err.message, 'error');
+    }
+  }
+
+  if (btnSelectGallery && galleryFileInput) {
+    btnSelectGallery.addEventListener('click', (e) => {
+      e.stopPropagation();
+      galleryFileInput.click();
+    });
+  }
+
+  if (galleryFileInput) {
+    galleryFileInput.addEventListener('change', async () => {
+      if (galleryFileInput.files) {
+        await addFilesToGallery(galleryFileInput.files);
+        galleryFileInput.value = '';
+      }
+    });
+  }
+
+  if (galleryDropzone) {
+    galleryDropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      galleryDropzone.classList.add('drag-over');
+    });
+
+    galleryDropzone.addEventListener('dragleave', () => {
+      galleryDropzone.classList.remove('drag-over');
+    });
+
+    galleryDropzone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      galleryDropzone.classList.remove('drag-over');
+      if (e.dataTransfer && e.dataTransfer.files) {
+        await addFilesToGallery(e.dataTransfer.files);
+      }
+    });
+  }
+
+  // Apertura y Cierre del Modal
   if (addProjectBtn) {
     addProjectBtn.addEventListener('click', () => {
       modalBackdrop.classList.add('active');
@@ -396,61 +749,63 @@ function initAdminModal() {
     }
   });
 
-  // Selector rápido de presets de fotos
-  if (presetSelector) {
-    presetSelector.addEventListener('change', (e) => {
-      if (e.target.value) {
-        document.getElementById('newProjImage').value = e.target.value;
-      }
-    });
-  }
-
+  // Envío del Formulario
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
+      if (!currentCover || !currentCover.dataUrl) {
+        showToast('Por favor cargue una imagen de portada para la obra.', 'error');
+        return;
+      }
+
       const title = document.getElementById('newProjTitle').value.trim();
       const category = document.getElementById('newProjCategory').value;
-      const year = document.getElementById('newProjYear').value.trim() || '2025';
-      const location = document.getElementById('newProjLocation').value.trim() || 'Argentina';
-      const surface = document.getElementById('newProjSurface').value.trim() || '1.000 m²';
-      const image = document.getElementById('newProjImage').value.trim() || 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80';
+      const year = document.getElementById('newProjYear').value.trim() || '2026';
+      const location = document.getElementById('newProjLocation').value.trim() || 'Córdoba, Argentina';
+      const surface = document.getElementById('newProjSurface').value.trim() || '500 m²';
       const summary = document.getElementById('newProjSummary').value.trim();
       const program = document.getElementById('newProjProgram').value.trim();
       const challenges = document.getElementById('newProjChallenges').value.trim();
 
+      // Galería completa: portada al inicio + hasta 10 fotos adicionales
+      const fullGallery = [currentCover.dataUrl, ...currentGallery.map(item => item.dataUrl)];
+
       const newProject = {
         id: 'proj-' + Date.now(),
         title: title,
+        shortTitle: title,
         category: category,
-        categoryLabel: category === 'hospitalaria' ? 'Arquitectura Sanitaria' : 'Arquitectura Habitacional',
+        categoryLabel: category === 'salud' ? 'Arquitectura Para la Salud' : 'Obras Residenciales',
         year: year,
         location: location,
         surface: surface,
-        image: image,
+        image: currentCover.dataUrl,
         summary: summary,
+        memoriaDescriptiva: summary,
         details: {
-          client: "Estudio EMEA",
-          program: program || "Programa médico-arquitectónico integral con áreas de atención y servicios técnicos.",
-          challenges: challenges || "Diseño bioclimático, estanqueidad aséptica y optimización de flujos.",
+          client: "Manestar + Avila Arquitectura",
+          program: program || "Programa arquitectónico integral proyectado a medida.",
+          challenges: challenges || "Rigor técnico, confort espacial y principios de arquitectura contemporánea.",
           specs: [
-            { label: "Superficie", value: surface },
+            { label: "Superficie Cubierta", value: surface },
             { label: "Ubicación", value: location },
             { label: "Año de Proyecto", value: year },
-            { label: "Tipología", value: category === 'hospitalaria' ? 'Sanitaria' : 'Residencial' }
+            { label: "Especialidad", value: category === 'salud' ? 'Salud / Diagnóstico' : 'Residencial' }
           ],
-          gallery: [image]
+          gallery: fullGallery
         }
       };
 
       const projects = getStoredProjects();
-      projects.unshift(newProject); // Agregar al principio
+      projects.unshift(newProject); // Agregar al inicio del catálogo
       saveProjects(projects);
 
       form.reset();
+      resetUploadStates();
       modalBackdrop.classList.remove('active');
       renderProjects();
-      showToast(`¡Obra "${title}" agregada con éxito al catálogo!`);
+      showToast(`¡Obra "${title}" publicada con éxito con su portada y ${fullGallery.length} fotos!`);
     });
   }
 }
@@ -638,34 +993,46 @@ const COVER_ROTATION_MS = 6500;
 
 const COVER_PHOTOS = [
   {
-    url: "assets/siss-hero.jpg",
-    title: "Centro Médico SISS",
-    tag: "Centro Médico de Vanguardia",
-    sub: "Arquitectura Para la Salud — Córdoba"
-  },
-  {
-    url: "assets/villa-dolores-facade.jpg",
-    title: "Centro Diagnóstico por Imágenes Villa Dolores",
+    url: "assets/salud-lobby-recepcion-principal.jpg",
+    title: "Centro Médico Polivalente: Lobby Central",
     tag: "Arquitectura Para la Salud",
-    sub: "Piel Metálica Microperforada de Planos Desplazados"
+    sub: "Mostrador Acanalado Retroiluminado & Biofilia — Córdoba"
   },
   {
-    url: "assets/villa-dolores-night.jpg",
-    title: "Centro de Diagnóstico e Imágenes Médicas Villa Dolores",
-    tag: "Salud / Diagnóstico por Imágenes",
-    sub: "Fachada Vidriada y Hall a Doble Altura Iluminado"
+    url: "assets/residencia-deck-atardecer.jpg",
+    title: "Residencia Terra Atardecer",
+    tag: "Obras y Proyectos Residenciales",
+    sub: "Doble Altura Vidriada, Deck y Jardín Iluminado"
   },
   {
-    url: "assets/wellness-reception.jpg",
-    title: "Centro de Diagnóstico por Imágenes & Ambulatorio",
-    tag: "Salud / Diagnóstico por Imágenes",
-    sub: "Recepción Integral y Humanización de Espacios Médicos"
-  },
-  {
-    url: "assets/siss-cover.jpg",
-    title: "Infraestructura Médica de Alta Complejidad",
+    url: "assets/salud-tomografo-diagnostico.jpg",
+    title: "Diagnóstico por Imágenes de Alta Complejidad",
     tag: "Arquitectura Para la Salud",
-    sub: "Diseño Funcional, Bioseguridad y Vanguardia"
+    sub: "Búnker Radiológico con Vidrio Plomado y Tomografía Canon"
+  },
+  {
+    url: "assets/residencia-fachada-piedra.jpg",
+    title: "Residencia Cantera",
+    tag: "Obras y Proyectos Residenciales",
+    sub: "Fachada en Piedra Natural, Madera y Jardineras Voladas"
+  },
+  {
+    url: "assets/salud-sala-espera-vidriada.jpg",
+    title: "Centro Médico Aramburu: Sala de Espera Panorámica",
+    tag: "Arquitectura Para la Salud",
+    sub: "Luz Natural, Mural Artístico y Conexión con el Entorno"
+  },
+  {
+    url: "assets/residencia-pergola-moderna.jpg",
+    title: "Residencia El Prado",
+    tag: "Obras y Proyectos Residenciales",
+    sub: "Diseño Contemporáneo en 1 Planta con Pérgola y Piedra"
+  },
+  {
+    url: "assets/clinica-recepcion-wellness.jpg",
+    title: "Clínica & Consultorios Wellness",
+    tag: "Arquitectura Para la Salud",
+    sub: "Recepción Curva, Biofilia y Humanización Sanitaria"
   }
 ];
 

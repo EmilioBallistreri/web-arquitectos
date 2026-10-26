@@ -36,7 +36,31 @@
 
       <nav>
         <ul class="nav-links">
-          <li><a href="proyectos.html" class="nav-link">PROYECTOS</a></li>
+          <li class="nav-item-dropdown">
+            <a href="proyectos.html" class="nav-link dropdown-toggle" id="navProyectosLink" aria-haspopup="true" aria-expanded="false">
+              <span>PROYECTOS</span>
+              <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="nav-dropdown-menu" id="navProyectosMenu">
+              <a href="proyectos.html?categoria=salud" class="dropdown-item-link" data-category="salud">
+                <span class="dropdown-item-num">01</span>
+                <div class="dropdown-item-info">
+                  <span class="dropdown-item-title">ARQUITECTURA PARA LA SALUD</span>
+                  <span class="dropdown-item-desc">Hospitalaria, diagnóstico por imagen y centros médicos</span>
+                </div>
+                <span class="dropdown-item-arrow">→</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="proyectos.html?categoria=residenciales" class="dropdown-item-link" data-category="residenciales">
+                <span class="dropdown-item-num">02</span>
+                <div class="dropdown-item-info">
+                  <span class="dropdown-item-title">OBRAS Y PROYECTOS RESIDENCIALES</span>
+                  <span class="dropdown-item-desc">Viviendas unifamiliares y diseño contemporáneo</span>
+                </div>
+                <span class="dropdown-item-arrow">→</span>
+              </a>
+            </div>
+          </li>
           <li><a href="nosotros.html" class="nav-link active">NOSOTROS</a></li>
           <li><a href="index.html#que-hacemos" class="nav-link">QUÉ HACEMOS</a></li>
           <li><a href="index.html#contacto" class="nav-link">CONTACTO</a></li>
@@ -104,7 +128,7 @@
   <section class="nosotros-team-section">
     <div class="container">
       <div class="nosotros-team-header">
-        <span class="section-tag">• DIRECCIÓN DEL ESTUDIO</span>
+        <span class="section-tag">DIRECCIÓN DEL ESTUDIO</span>
         <h2 class="section-title">Socios Titulares</h2>
         <p class="section-subtitle">
           Liderazgo técnico, compromiso ético y visión de diseño al servicio de cada obra y comitente.
@@ -144,87 +168,136 @@
   </section>
 
   <!-- ==========================================================================
-       LINEAMIENTOS PROYECTUALES | WELLNESS (BIENESTAR) - TRASLADADO DESDE HOME
+       LINEAMIENTOS PROYECTUALES | WELLNESS (BIENESTAR) & PILARES PROYECTUALES
        ========================================================================== -->
   <section class="wellness-banner-section" id="wellness">
     <div class="wellness-bg-wrapper">
-      <img src="assets/wellness-reception.jpg" alt="Recepción Centro Diagnóstico Wellness" class="wellness-bg-img">
+      <img src="assets/salud-lobby-recepcion-principal.jpg" alt="Lobby Centro Médico Wellness" class="wellness-bg-img">
       <div class="wellness-bg-overlay"></div>
     </div>
 
     <div class="container wellness-container">
+      <!-- Tag Superior -->
       <div class="wellness-top-strip">
         <span class="wellness-strip-tag">LINEAMIENTOS PROYECTUALES</span>
         <span class="wellness-strip-divider">|</span>
         <span class="wellness-strip-highlight">WELLNESS (BIENESTAR)</span>
       </div>
 
-      <div class="wellness-quotes-block">
-        <blockquote class="wellness-quote-main">
-          "Transformamos la experiencia médica a través del diseño:<br>
-          espacios que no solo se ven bien, sino que te hacen bien."
-        </blockquote>
+      <!-- Título Principal y Subtítulo -->
+      <div class="wellness-header-block">
+        <h2 class="wellness-main-title">
+          "Diseñamos espacios que no solo se ven bien, sino que te hacen bien."
+        </h2>
         <p class="wellness-quote-sub">
           "Arquitectura pensada para elevar la calidad de tu atención médica."
         </p>
-        <p class="wellness-quote-desc">
-          Entendemos el espacio físico arquitectónico como un agente activo en el proceso de curación y bienestar.
-        </p>
-
-        <div class="wellness-cta-row">
-          <button class="wellness-more-btn" id="openWellnessModalBtn" aria-label="Conocer más sobre Wellness y Bienestar en Arquitectura">
-            <span>conoce más</span>
-            <span class="wellness-flower-icon">✻</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================================================
-       PILARES METODOLÓGICOS DEL ESTUDIO
-       ========================================================================== -->
-  <section class="nosotros-pillars-section">
-    <div class="container">
-      <div class="text-center" style="max-width: 680px; margin: 0 auto;">
-        <span class="section-tag">• NUESTRO MÉTODO</span>
-        <h2 class="section-title">Pilares Proyectuales</h2>
-        <p class="section-subtitle">
-          Un marco integral que combina rigor normativo, eficiencia constructiva y calidad espacial humana.
-        </p>
       </div>
 
-      <div class="nosotros-pillars-grid">
-        <div class="nosotros-pillar-card">
-          <span class="nosotros-pillar-num">01</span>
-          <h3 class="nosotros-pillar-title">Arquitectura Para la Salud</h3>
-          <p class="nosotros-pillar-text">
-            Diseño especializado de clínicas, quirófanos, salas de resonancia magnética, tomografía y hemodinamia, contemplando circuitos limpios/sucios y blindajes técnicos.
+      <!-- 3 TARJETAS WELLNESS CON SEPARACIÓN PROLIJA Y EQUITATIVA -->
+      <div class="wellness-cards-grid">
+        <!-- Tarjeta 1 -->
+        <article class="wellness-card">
+          <div class="wellness-card-top">
+            <span class="wellness-card-num">01</span>
+            <span class="wellness-card-tag">Lineamiento Proyectual</span>
+          </div>
+          <p class="wellness-card-text">
+            En la arquitectura contemporánea, especialmente en el ámbito de la salud y el diagnóstico por imagen, el término wellness (bienestar) para nosotros, ha dejado de ser una tendencia para convertirse en un lineamiento proyectual indispensable.
           </p>
+        </article>
+
+        <!-- Tarjeta 2 -->
+        <article class="wellness-card">
+          <div class="wellness-card-top">
+            <span class="wellness-card-num">02</span>
+            <span class="wellness-card-tag">Enfoque Humano Integral</span>
+          </div>
+          <p class="wellness-card-text">
+            Aplicar el enfoque wellness al diseño de espacios médicos significa proyectar no solo para la funcionalidad técnica y el flujo clínico, sino para el bienestar integral de la persona: pacientes, acompañantes y el equipo de salud.
+          </p>
+          <p class="wellness-card-text wellness-card-text-second">
+            En centros de diagnóstico y entornos sanitarios, el estrés y la ansiedad suelen estar presentes. Nuestro compromiso proyectual busca transformar esa experiencia a través de la arquitectura.
+          </p>
+        </article>
+
+        <!-- Tarjeta 3 -->
+        <article class="wellness-card">
+          <div class="wellness-card-top">
+            <span class="wellness-card-num">03</span>
+            <span class="wellness-card-tag">Alta Complejidad & Calma</span>
+          </div>
+          <p class="wellness-card-text">
+            En nuestro estudio comprendemos que la arquitectura médica va mucho más allá de la funcionalidad técnica. Cuando se trata de Diagnóstico por Imagen, nos enfrentamos a un doble desafío: albergar tecnología de alta complejidad y, al mismo tiempo, gestionar la alta vulnerabilidad emocional con la que los pacientes se enfrentan a estos estudios. Por ello, integramos los principios del Wellness en cada etapa del diseño arquitectónico, transformando entornos tradicionalmente fríos e intimidantes en espacios de bienestar, calma y confianza.
+          </p>
+        </article>
+      </div>
+
+      <!-- PILARES PROYECTUALES HORIZONTALES (IZQUIERDA) + RUEDA WELLNESS (DERECHA) -->
+      <div class="wellness-pillars-split">
+        <!-- Columna Izquierda: Pilares en formato horizontal -->
+        <div class="wellness-pillars-col">
+          <div class="wellness-pillars-header">
+            <span class="wellness-pillars-eyebrow">METODOLOGÍA DE DISEÑO</span>
+            <h3 class="wellness-pillars-heading">Pilares Proyectuales</h3>
+          </div>
+
+          <div class="wellness-pillars-rows">
+            <!-- 01 -->
+            <div class="wellness-pillar-row">
+              <div class="wellness-pillar-badge">01</div>
+              <div class="wellness-pillar-info">
+                <h4 class="wellness-pillar-name">Arquitectura Para la Salud</h4>
+                <p class="wellness-pillar-desc">
+                  Diseño especializado de clínicas, quirófanos, salas de resonancia magnética, tomografía y hemodinamia, contemplando circuitos limpios/sucios y blindajes técnicos.
+                </p>
+              </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="wellness-pillar-row">
+              <div class="wellness-pillar-badge">02</div>
+              <div class="wellness-pillar-info">
+                <h4 class="wellness-pillar-name">Modelado BIM & Rigor</h4>
+                <p class="wellness-pillar-desc">
+                  Coordinación espacial de instalaciones termomecánicas complejas, gases medicinales, ductos y corrientes débiles mediante metodología Building Information Modeling.
+                </p>
+              </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="wellness-pillar-row">
+              <div class="wellness-pillar-badge">03</div>
+              <div class="wellness-pillar-info">
+                <h4 class="wellness-pillar-name">Principios Wellness</h4>
+                <p class="wellness-pillar-desc">
+                  Incorporación activa de luz natural, calidez material, acondicionamiento acústico y biofilia para transformar la experiencia del paciente y del equipo médico.
+                </p>
+              </div>
+            </div>
+
+            <!-- 04 -->
+            <div class="wellness-pillar-row">
+              <div class="wellness-pillar-badge">04</div>
+              <div class="wellness-pillar-info">
+                <h4 class="wellness-pillar-name">Dirección de Obras</h4>
+                <p class="wellness-pillar-desc">
+                  Acompañamiento y gerenciamiento integral desde la concepción del anteproyecto hasta la fiscalización de obra y la entrega funcional de las instalaciones.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="nosotros-pillar-card">
-          <span class="nosotros-pillar-num">02</span>
-          <h3 class="nosotros-pillar-title">Modelado BIM & Rigor</h3>
-          <p class="nosotros-pillar-text">
-            Coordinación espacial de instalaciones termomecánicas complejas, gases medicinales, ductos y corrientes débiles mediante metodología Building Information Modeling.
-          </p>
-        </div>
-
-        <div class="nosotros-pillar-card">
-          <span class="nosotros-pillar-num">03</span>
-          <h3 class="nosotros-pillar-title">Principios Wellness</h3>
-          <p class="nosotros-pillar-text">
-            Incorporación activa de luz natural, calidez material, acondicionamiento acústico y biofilia para transformar la experiencia del paciente y del equipo médico.
-          </p>
-        </div>
-
-        <div class="nosotros-pillar-card">
-          <span class="nosotros-pillar-num">04</span>
-          <h3 class="nosotros-pillar-title">Dirección de Obras</h3>
-          <p class="nosotros-pillar-text">
-            Acompañamiento y gerenciamiento integral desde la concepción del anteproyecto hasta la fiscalización de obra y la entrega funcional de las instalaciones.
-          </p>
+        <!-- Columna Derecha: Rueda Wellness -->
+        <div class="wellness-graphic-col">
+          <div class="wellness-wheel-frame" id="wellnessWheelFrameTrigger" title="Click para ver en detalle las 8 dimensiones" style="cursor: pointer;">
+            <img src="assets/wellness-wheel.jpg" alt="Rueda de las 8 dimensiones del Wellness en Salud" class="wellness-wheel-graphic">
+          </div>
+          <div class="wellness-wheel-caption">
+            <span class="wheel-caption-tag">8 DIMENSIONES DEL BIENESTAR</span>
+            <span class="wheel-caption-sub">Enfoque Proyectual en Centros de Salud</span>
+          </div>
         </div>
       </div>
     </div>
@@ -236,7 +309,7 @@
   <section class="nosotros-cta-section">
     <div class="container">
       <div class="nosotros-cta-content">
-        <span class="section-tag">• DIÁLOGO PROFESIONAL</span>
+        <span class="section-tag">DIÁLOGO PROFESIONAL</span>
         <h2 class="nosotros-cta-title">¿Tiene un proyecto en desarrollo?</h2>
         <p class="nosotros-cta-desc">
           Contáctenos para coordinar una reunión técnica o asesoramiento preliminar para su infraestructura médica o residencial.
@@ -396,10 +469,17 @@
       });
     }
 
-    // Modal Wellness
+    // Modal Wellness (Ampliación de gráfico si se desea)
     const openWellnessBtn = document.getElementById('openWellnessModalBtn');
+    const wheelFrameTrigger = document.getElementById('wellnessWheelFrameTrigger');
     const wellnessModal = document.getElementById('wellnessDetailModal');
     const closeWellnessBtn = document.getElementById('closeWellnessModal');
+    
+    if (wheelFrameTrigger && wellnessModal) {
+      wheelFrameTrigger.addEventListener('click', () => {
+        wellnessModal.classList.add('active');
+      });
+    }
     if (openWellnessBtn && wellnessModal) {
       openWellnessBtn.addEventListener('click', () => {
         wellnessModal.classList.add('active');

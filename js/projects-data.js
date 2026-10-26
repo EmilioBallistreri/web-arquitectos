@@ -1,9 +1,152 @@
 /**
- * Banco de Proyectos Iniciales - EMEA Arquitectura
- * Especialidad: Arquitectura Sanitaria/Hospitalaria y Habitacional Contemporánea
+ * Banco de Proyectos Iniciales - Manestar + Avila Arquitectura
+ * Especialidades: Arquitectura Sanitaria/Hospitalaria y Obras Residenciales Contemporáneas
  */
 
 export const INITIAL_PROJECTS = [
+  // ==========================================================================
+  // SUBSECCIÓN 1: ARQUITECTURA PARA LA SALUD
+  // ==========================================================================
+  {
+    id: "proj-tomografo",
+    title: "Centro de Diagnóstico por Imágenes: Tomografía Computada & Alta Complejidad",
+    shortTitle: "Centro Diagnóstico TAC & Resonancia",
+    category: "salud",
+    categoryLabel: "Arquitectura Para la Salud",
+    year: "2026",
+    status: "Finalizado",
+    location: "Córdoba, Argentina",
+    surface: "620 m²",
+    use: "Salud / Diagnóstico por Imágenes de Alta Complejidad",
+    image: "assets/salud-tomografo-diagnostico.jpg",
+    summary: "Infraestructura sanitaria de máxima precisión técnica para instalación de equipamiento tomográfico y resonancia magnética, con búnker plomado, comando visual y bioseguridad.",
+    memoriaDescriptiva: `El proyecto responde a los rigurosos requerimientos arquitectónicos y físicos exigidos para la instalación de tomografía computada y resonancia de última generación.
+
+La sala de escaneo incorpora aislamiento radiológico integral en muros, pisos y cielo rasos mediante plomo de densidad certificada, complementado con una ventana de control con vidrio plomado de alta transparencia que garantiza la supervisión visual continua y la bioprotección del operador técnico.
+
+El puesto de comando fue diseñado con criterios ergonómicos, ventilación independiente de presión negativa y distribución modular de bandejas de datos y potencia aisladas. La atmósfera general combina acabados asépticos antibacterianos con una iluminación perimetral tenue que reduce la ansiedad del paciente durante el procedimiento.`,
+    details: {
+      client: "Institución Médica de Diagnóstico",
+      program: "Búnker de tomografía computada, sala de comando con vidrio plomado, vestidor de preparación de pacientes, sala técnica de consolas y acceso de camillas de emergencia.",
+      challenges: "Blindaje radiológico estricto, refuerzo estructural de losas para disipación de vibraciones y refrigeración de precisión para consolas electrónicas.",
+      specs: [
+        { label: "Equipamiento", value: "Tomógrafo Computado Multislice Canon" },
+        { label: "Blindaje", value: "Plomo 2.5mm + Vidrio Plomado 2.1mm Eq." },
+        { label: "Superficie", value: "620 m²" },
+        { label: "Año", value: "2026" }
+      ],
+      gallery: [
+        "assets/salud-tomografo-diagnostico.jpg",
+        "assets/salud-lobby-recepcion-principal.jpg",
+        "assets/salud-sala-espera-vidriada.jpg",
+        "assets/salud-recepcion-clinica.jpg"
+      ]
+    }
+  },
+  {
+    id: "proj-lobby-principal",
+    title: "Centro Médico Polivalente: Lobby Principal & Circulaciones Sanitarias",
+    shortTitle: "Lobby & Recepción Centro Médico",
+    category: "salud",
+    categoryLabel: "Arquitectura Para la Salud",
+    year: "2025",
+    status: "Finalizado",
+    location: "Córdoba, Argentina",
+    surface: "1.450 m²",
+    use: "Salud / Hall Central & Atención al Paciente",
+    image: "assets/salud-lobby-recepcion-principal.jpg",
+    summary: "Gran hall central de atención médica y triage ambulatorio con mostrador corrido retroiluminado, exclusa vidriada de acceso, biofilia y claridad circulatoria.",
+    memoriaDescriptiva: `El hall central articula el flujo de pacientes ambulatorios hacia los consultorios de especialidades, laboratorios y diagnóstico.
+
+El volumen de recepción se materializa a través de un mostrador corrido de madera clara y estrías acanaladas, enfatizado por una garganta lumínica inferior en LED cálido que flota visualmente sobre el solado porcelánico pulido.
+
+Una exclusa de ingreso con carpinterías de aluminio y vidrio templado modula el intercambio térmico con el exterior y optimiza el consumo energético del sistema de climatización central. La vegetación de interior y los amplios aventanamientos con vistas a la arboleda exterior refuerzan los lineamientos proyectuales del Wellness aplicados a la salud.`,
+    details: {
+      client: "Centro Médico Regional",
+      program: "Lobby central de doble altura, mostrador de triage para 4 puestos, esclusa de control térmico, sectores de espera diferida y núcleos de sanitarios accesibles.",
+      challenges: "Aislamiento acústico de zonas de espera mediante paneles fonoabsorbentes y circulación diferenciada limpia/sucia.",
+      specs: [
+        { label: "Capacidad", value: "850 pacientes / día" },
+        { label: "Superficie", value: "1.450 m²" },
+        { label: "Iluminación", value: "Sistemas LED cálido con control circadiano" },
+        { label: "Año", value: "2025" }
+      ],
+      gallery: [
+        "assets/salud-lobby-recepcion-principal.jpg",
+        "assets/salud-sala-espera-vidriada.jpg",
+        "assets/salud-tomografo-diagnostico.jpg",
+        "assets/salud-recepcion-clinica.jpg"
+      ]
+    }
+  },
+  {
+    id: "proj-aramburu-espera",
+    title: "Centro Médico Aramburu: Sala de Espera Panorámica & Arte Biofílico",
+    shortTitle: "Centro Médico Aramburu: Sala de Espera",
+    category: "salud",
+    categoryLabel: "Arquitectura Para la Salud",
+    year: "2025",
+    status: "Finalizado",
+    location: "Córdoba, Argentina",
+    surface: "520 m²",
+    use: "Salud / Sala de Espera & Consultorios",
+    image: "assets/salud-sala-espera-vidriada.jpg",
+    summary: "Espacio de espera y circulación médica con frente vidriado integral, visuales directas al paisaje natural, mobiliario escandinavo y mural biofílico.",
+    memoriaDescriptiva: `Concebida como una pausa en la experiencia médica, la sala de espera del Centro Médico Aramburu maximiza la entrada de luz natural y la permeabilidad visual hacia el parque circundante.
+
+Las carpinterías de suelo a techo con serigrafía micropulida brindan privacidad a la altura de los ojos del paciente sentado, sin perder la conexión con el entorno verde. El espacio incorpora un mural de arte contemporáneo de escala monumental que humaniza el ambiente y rompe con la frialdad hospitalaria convencional.`,
+    details: {
+      client: "Centro Médico Aramburu",
+      program: "Sala de espera panorámica, galería de consultorios, recepción técnica y puestos de autoconsulta.",
+      challenges: "Control de deslumbramiento solar matutino mediante vidrios de baja emisividad y cortinas enrollables automatizadas.",
+      specs: [
+        { label: "Superficie", value: "520 m²" },
+        { label: "Vidriados", value: "Frente DVH con lámina de seguridad 6+6" },
+        { label: "Ubicación", value: "Córdoba, Argentina" },
+        { label: "Año", value: "2025" }
+      ],
+      gallery: [
+        "assets/salud-sala-espera-vidriada.jpg",
+        "assets/salud-lobby-recepcion-principal.jpg",
+        "assets/salud-recepcion-clinica.jpg"
+      ]
+    }
+  },
+  {
+    id: "proj-clinica-wellness",
+    title: "Clínica de Especialidades & Centro Odontológico Wellness",
+    shortTitle: "Clínica Odontológica & Consultorios Wellness",
+    category: "salud",
+    categoryLabel: "Arquitectura Para la Salud",
+    year: "2025",
+    status: "Finalizado",
+    location: "Córdoba, Argentina",
+    surface: "380 m²",
+    use: "Salud / Odontología & Recepción Wellness",
+    image: "assets/clinica-recepcion-wellness.jpg",
+    summary: "Diseño y remodelación de clínica odontológica y consultorios bajo estándares Wellness: mostrador curvo, iluminación lineal indirecta y biofilia.",
+    memoriaDescriptiva: `El proyecto aborda la humanización de los espacios de atención médica y odontológica a través del lineamiento proyectual Wellness.
+
+La recepción se estructura a partir de un mostrador curvo de madera clara y texturas acanaladas que suavizan el recorrido del paciente. La iluminación lineal rasante emula los ritmos circadianos de luz natural, reduciendo el estrés previo a la consulta.
+
+Los consultorios clínicos cuentan con panelados de vidrio esmerilado que permiten el paso de la luz garantizando privacidad acústica y visual, ergonomía total para los profesionales y acabados sanitarios antibacterianos de fácil higienización.`,
+    details: {
+      client: "Clínica Privada",
+      program: "Recepción y sala de espera Wellness, 3 consultorios odontológicos de alta precisión, área de esterilización, laboratorio y sanitarios accesibles.",
+      challenges: "Instalaciones de aire comprimido, aspiración quirúrgica y bandejas eléctricas ocultas bajo cielorraso técnico acústico.",
+      specs: [
+        { label: "Superficie", value: "380 m²" },
+        { label: "Enfoque", value: "Arquitectura Sanitaria Wellness" },
+        { label: "Ubicación", value: "Córdoba, Argentina" },
+        { label: "Año", value: "2025" }
+      ],
+      gallery: [
+        "assets/clinica-recepcion-wellness.jpg",
+        "assets/clinica-consultorio-dental.jpg",
+        "assets/salud-recepcion-clinica.jpg"
+      ]
+    }
+  },
   {
     id: "proj-villa-dolores",
     title: "Centro de Diagnóstico e Imágenes Médicas Villa Dolores",
@@ -37,130 +180,111 @@ La planta baja concentra los servicios de Resonancia Magnética, Tomografía, Ra
       gallery: [
         "assets/villa-dolores-facade.jpg",
         "assets/villa-dolores-night.jpg",
-        "assets/wellness-reception.jpg"
+        "assets/salud-tomografo-diagnostico.jpg",
+        "assets/salud-lobby-recepcion-principal.jpg"
       ]
     }
   },
+
+  // ==========================================================================
+  // SUBSECCIÓN 2: OBRAS Y PROYECTOS RESIDENCIALES
+  // ==========================================================================
   {
-    id: "proj-siss",
-    title: "Centro Médico SISS",
-    shortTitle: "Centro Médico SISS",
-    category: "salud",
-    categoryLabel: "Arquitectura Para la Salud",
+    id: "proj-residencia-deck",
+    title: "Residencia Terra Atardecer: Casa con Doble Altura y Deck",
+    shortTitle: "Residencia Terra Atardecer",
+    category: "residenciales",
+    categoryLabel: "Obras Residenciales",
     year: "2025",
     status: "Finalizado",
     location: "Córdoba, Argentina",
-    surface: "1.850 m²",
-    use: "Salud / Consultorios & Diagnóstico",
-    image: "assets/siss-hero.jpg",
-    summary: "Centro médico polivalente con arquitectura de vanguardia, doble altura de recepción, accesibilidad universal y envolvente de control bioclimático.",
-    memoriaDescriptiva: `El Centro Médico SISS fue concebido como una pieza arquitectónica icónica que conjuga prestancia institucional y un diseño enfocado en la experiencia del paciente. 
-
-El pórtico de acceso monumental genera una transición amable entre el entorno urbano y el ámbito sanitario. En el interior, la doble altura, los amplios paños vidriados y la integración con patios de luz natural garantizan un ambiente sereno y acogedor.`,
-    details: {
-      client: "SISS Salud",
-      program: "Consultorios de diversas especialidades, área de estudios complementarios, laboratorio de análisis clínicos y áreas de enfermería.",
-      challenges: "Accesibilidad universal total mediante rampas integradas a la volumetría exterior y confort higrotérmico pasivo.",
-      specs: [
-        { label: "Superficie", value: "1.850 m²" },
-        { label: "Año", value: "2025" },
-        { label: "Ubicación", value: "Córdoba, Argentina" },
-        { label: "Tipología", value: "Centro Médico Polivalente" }
-      ],
-      gallery: [
-        "assets/siss-hero.jpg",
-        "assets/siss-cover.jpg"
-      ]
-    }
-  },
-  {
-    id: "proj-3",
-    title: "Residencia Bruma: Casa en el Lago",
-    shortTitle: "Residencia Bruma",
-    category: "residenciales",
-    categoryLabel: "Residenciales",
-    year: "2024",
-    status: "Finalizado",
-    location: "Bariloche, Río Negro",
-    surface: "580 m²",
+    surface: "420 m²",
     use: "Residencial / Vivienda Unifamiliar",
-    image: "assets/cat-residenciales.jpg",
-    summary: "Vivienda unifamiliar con envolvente térmica pasiva, estructura de hormigón visto y grandes vanos orientados a las visuales cordilleranas.",
-    memoriaDescriptiva: `Concebida en diálogo íntimo con el entorno paisajístico patagónico, la Residencia Bruma combina pureza volumétrica y calidez material. Los grandes planos vidriados capturan la luz natural y el reflejo del lago, mientras que la estructura de hormigón visto y revestimientos en madera local aseguran eficiencia energética y confort interior constante.`,
+    image: "assets/residencia-deck-atardecer.jpg",
+    summary: "Vivienda contemporánea de dos niveles con imponente doble altura vidriada, deck de madera perimetral, integración biofílica y juegos de luz natural al crepúsculo.",
+    memoriaDescriptiva: `La vivienda se proyecta como un diálogo constante entre el interior y el parque posterior. El volumen de doble altura vidriado articula la zona social con las áreas privadas de planta alta, permitiendo que la luz del atardecer inunde el corazón de la casa.
+
+El gran deck de madera en planta baja funciona como expansión exterior directa de los ambientes comunes, conectando con el jardín iluminado y un muro verde perimetral que asegura intimidad y frescura térmica pasiva.`,
     details: {
       client: "Privado",
-      program: "Planta abierta con doble altura, 4 dormitorios en suite, estudio integrado con luz cenital, galería con deck voladizo y sistema de geotermia.",
-      challenges: "Implantación en terreno con pendiente pronunciada de 35°, minimización de puentes térmicos en climas extremos.",
+      program: "Living-comedor en doble altura, cocina integrada con isla, 3 dormitorios en suite, galería con asador, deck de madera y piscina.",
+      challenges: "Cálculo de carpinterías de aluminio de gran porte con DVH de control solar para evitar sobrecalentamiento vespertino.",
       specs: [
-        { label: "Tipología", value: "Vivienda Unifamiliar Exclusiva" },
-        { label: "Carpinterías", value: "Aluminio RPT con triple vidriado hermético (TVH)" },
-        { label: "Aislación", value: "Muros dobles con EPS de alta densidad (120mm)" },
-        { label: "Superficie Terreno", value: "2.400 m²" }
+        { label: "Superficie Cubierta", value: "420 m²" },
+        { label: "Carpinterías", value: "Aluminio A40 con DVH laminado" },
+        { label: "Ubicación", value: "Córdoba, Argentina" },
+        { label: "Año", value: "2025" }
       ],
       gallery: [
-        "assets/cat-residenciales.jpg",
-        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+        "assets/residencia-deck-atardecer.jpg",
+        "assets/residencia-fachada-piedra.jpg",
+        "assets/residencia-pergola-moderna.jpg"
       ]
     }
   },
   {
-    id: "proj-4",
-    title: "Centro de Diagnóstico por Imágenes & Ambulatorio Metropolitano",
-    shortTitle: "Centro Ambulatorio Metropolitano",
-    category: "salud",
-    categoryLabel: "Arquitectura Para la Salud",
-    year: "2023",
-    status: "Finalizado",
-    location: "Rosario, Santa Fe",
-    surface: "4.900 m²",
-    use: "Salud / Diagnóstico por Imágenes",
-    image: "assets/wellness-reception.jpg",
-    summary: "Reconversión de un edificio patrimonial para albergar tecnología médica de última generación con circulaciones fluidas y accesibilidad universal.",
-    memoriaDescriptiva: `Reconversión integral de edificio para albergar equipamiento de diagnóstico de alta complejidad, optimizando el flujo de pacientes ambulatorios y la bioseguridad del personal.`,
-    details: {
-      client: "Consorcio Médico del Litoral",
-      program: "2 salas de Resonancia Magnética 3T, 3 Tomógrafos Multislice, laboratorio de análisis clínicos automatizado y 18 consultorios polivalentes.",
-      challenges: "Cálculo estructural de refuerzos para sobrecargas de equipos pesados (resucitador de helio, jaulas de Faraday) preservando la fachada histórica.",
-      specs: [
-        { label: "Equipamiento Pesado", value: "2 Resonadores 3.0T + 3 TACs" },
-        { label: "Flujo de Pacientes", value: "Capacidad para 1.200 consultas/día" },
-        { label: "Sistemas Especiales", value: "Jaulas de Faraday de cobre y blindaje plomado" },
-        { label: "Superficie", value: "4.900 m²" }
-      ],
-      gallery: [
-        "assets/wellness-reception.jpg",
-        "assets/villa-dolores-night.jpg"
-      ]
-    }
-  },
-  {
-    id: "proj-5",
-    title: "Complejo Residencial & Jardín Biofílico Caelum",
-    shortTitle: "Complejo Residencial Caelum",
+    id: "proj-residencia-piedra",
+    title: "Residencia Cantera: Casa de Dos Plantas con Piedra y Madera",
+    shortTitle: "Residencia Cantera",
     category: "residenciales",
-    categoryLabel: "Residenciales",
+    categoryLabel: "Obras Residenciales",
     year: "2024",
     status: "Finalizado",
-    location: "Mendoza, Argentina",
-    surface: "12.000 m²",
-    use: "Residencial / Desarrollo Multifamiliar",
-    image: "assets/cat-residenciales.jpg",
-    summary: "Desarrollo residencial de baja densidad articulado en torno a un parque central con vegetación xerófila y terrazas escalonadas.",
-    memoriaDescriptiva: `Conjunto habitacional sustentable estructurado alrededor de pulmones verdes nativos y eficiencia bioclimática con vistas a la cordillera.`,
+    location: "Córdoba, Argentina",
+    surface: "360 m²",
+    use: "Residencial / Vivienda Unifamiliar",
+    image: "assets/residencia-fachada-piedra.jpg",
+    summary: "Fachada contemporánea caracterizada por un núcleo central de piedra rústica, aventanamientos verticales, jardineras voladas de madera y acceso jerarquizado.",
+    memoriaDescriptiva: `Esta residencia destaca por su fuerte impronta volumétrica y honestidad de materiales. El eje vertical de piedra natural enmarca la doble altura del hall de ingreso, mientras que los volúmenes superiores en voladizo incorporan jardineras corridas de madera que aportan calidez y naturaleza a la fachada.
+
+El acceso vehicular y peatonal se resuelven de forma independiente, garantizando comodidad, seguridad y una presencia sobria en el entorno residencial.`,
     details: {
-      client: "Desarrollos Sustentables Caelum",
-      program: "36 unidades residenciales de 2, 3 y 4 ambientes con terrazas privadas, sector de coworking, piscina y circuito aeróbico.",
-      challenges: "Aprovechamiento de las brisas cordilleranas para ventilación cruzada natural y diseño de parasoles móviles.",
+      client: "Privado",
+      program: "Planta baja social con cochera doble cerrada, cocina-comedor y patio interno. Planta alta con suite principal y 2 dormitorios con jardineras.",
+      challenges: "Detalle constructivo de jardineras suspendidas con sistema de drenaje oculto e impermeabilización bicapa.",
       specs: [
-        { label: "Unidades", value: "36 departamentos boutique" },
-        { label: "Espacios Verdes", value: "4.500 m² de parque nativo" },
-        { label: "Energía Renovable", value: "Páneles fotovoltaicos en cubiertas" },
-        { label: "Amenities", value: "Gimnasio, SUM, Cava y Spa" }
+        { label: "Superficie Cubierta", value: "360 m²" },
+        { label: "Revestimiento", value: "Piedra natural local y madera tratada" },
+        { label: "Ubicación", value: "Córdoba, Argentina" },
+        { label: "Año", value: "2024" }
       ],
       gallery: [
-        "assets/cat-residenciales.jpg",
-        "assets/siss-cover.jpg"
+        "assets/residencia-fachada-piedra.jpg",
+        "assets/residencia-deck-atardecer.jpg",
+        "assets/residencia-pergola-moderna.jpg"
+      ]
+    }
+  },
+  {
+    id: "proj-residencia-pergola",
+    title: "Residencia El Prado: Casa Contemporánea con Pérgola & Piedra",
+    shortTitle: "Residencia El Prado",
+    category: "residenciales",
+    categoryLabel: "Obras Residenciales",
+    year: "2024",
+    status: "Finalizado",
+    location: "Córdoba, Argentina",
+    surface: "295 m²",
+    use: "Residencial / Vivienda de Una Planta",
+    image: "assets/residencia-pergola-moderna.jpg",
+    summary: "Vivienda en una sola planta con desarrollo horizontal, pérgola metálica moderna, muro de piedra iluminado y ventanales apaisados integrados a canteros.",
+    memoriaDescriptiva: `Diseñada bajo los principios de accesibilidad y fluidez espacial en una única planta, la Residencia El Prado propone una volumetría pura y extendida. La pérgola metálica aporta sombra y jerarquía al ingreso y estacionamiento, articulándose con un muro exterior en piedra iluminado con rasantes cálidas.
+
+Las aberturas frontales quedan enmarcadas por cajones en relieve con jardineras incorporadas, protegiendo las visuales interiores y generando un microclima verde permanente.`,
+    details: {
+      client: "Privado",
+      program: "3 dormitorios (1 en suite), estar-comedor integrado, pérgola vehicular exterior, galería semicubierta con asador y patio parquizado.",
+      challenges: "Estructura metálica liviana autoportante para la pérgola y solados de hormigón intertrabado drenante.",
+      specs: [
+        { label: "Superficie Cubierta", value: "295 m²" },
+        { label: "Tipología", value: "Vivienda Unifamiliar en 1 Planta" },
+        { label: "Ubicación", value: "Córdoba, Argentina" },
+        { label: "Año", value: "2024" }
+      ],
+      gallery: [
+        "assets/residencia-pergola-moderna.jpg",
+        "assets/residencia-deck-atardecer.jpg",
+        "assets/residencia-fachada-piedra.jpg"
       ]
     }
   }

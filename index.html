@@ -37,7 +37,31 @@
 
       <nav>
         <ul class="nav-links">
-          <li><a href="#proyectos" class="nav-link">PROYECTOS</a></li>
+          <li class="nav-item-dropdown">
+            <a href="proyectos.html" class="nav-link dropdown-toggle" id="navProyectosLink" aria-haspopup="true" aria-expanded="false">
+              <span>PROYECTOS</span>
+              <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </a>
+            <div class="nav-dropdown-menu" id="navProyectosMenu">
+              <a href="proyectos.html?categoria=salud" class="dropdown-item-link" data-category="salud">
+                <span class="dropdown-item-num">01</span>
+                <div class="dropdown-item-info">
+                  <span class="dropdown-item-title">ARQUITECTURA PARA LA SALUD</span>
+                  <span class="dropdown-item-desc">Hospitalaria, diagnóstico por imagen y centros médicos</span>
+                </div>
+                <span class="dropdown-item-arrow">→</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="proyectos.html?categoria=residenciales" class="dropdown-item-link" data-category="residenciales">
+                <span class="dropdown-item-num">02</span>
+                <div class="dropdown-item-info">
+                  <span class="dropdown-item-title">OBRAS Y PROYECTOS RESIDENCIALES</span>
+                  <span class="dropdown-item-desc">Viviendas unifamiliares y diseño contemporáneo</span>
+                </div>
+                <span class="dropdown-item-arrow">→</span>
+              </a>
+            </div>
+          </li>
           <li><a href="nosotros.html" class="nav-link">NOSOTROS</a></li>
           <li><a href="#que-hacemos" class="nav-link">QUÉ HACEMOS</a></li>
           <li><a href="#contacto" class="nav-link">CONTACTO</a></li>
@@ -64,7 +88,7 @@
        ========================================================================== -->
   <section class="photo-cover-section full-screen-cover" id="portada">
     <div class="photo-cover-slider" id="photoCoverSlider">
-      <div class="photo-cover-bg layer-a active" id="photoCoverBgA" style="background-image: url('assets/siss-hero.jpg');"></div>
+      <div class="photo-cover-bg layer-a active" id="photoCoverBgA" style="background-image: url('assets/salud-lobby-recepcion-principal.jpg');"></div>
       <div class="photo-cover-bg layer-b" id="photoCoverBgB"></div>
       <div class="photo-cover-overlay"></div>
     </div>
@@ -132,7 +156,7 @@
   <section class="projects-master-section" id="proyectos">
     <div class="specialties-header">
       <div class="container">
-        <span class="specialties-tag">• PROYECTOS</span>
+        <span class="section-tag">PROYECTOS</span>
         <h2 class="specialties-title">Especialidades del Estudio</h2>
       </div>
     </div>
@@ -140,7 +164,7 @@
     <!-- SOLO DOS BOTONES AJUSTADOS AL ANCHO DE LA PÁGINA (PÁGINA 3) -->
     <div class="specialties-split-banner">
       <a href="proyectos.html?categoria=salud" class="specialty-btn-card" id="btnCatSalud" data-category="salud" aria-label="Ver obras de Arquitectura Para la Salud">
-        <img src="assets/cat-salud.jpg" alt="Arquitectura Para la Salud" class="specialty-bg-img">
+        <img src="assets/salud-lobby-recepcion-principal.jpg" alt="Arquitectura Para la Salud" class="specialty-bg-img">
         <div class="specialty-overlay"></div>
         <div class="specialty-content">
           <span class="specialty-eyebrow">Especialidad Principal</span>
@@ -150,7 +174,7 @@
       </a>
 
       <a href="proyectos.html?categoria=residenciales" class="specialty-btn-card" id="btnCatResidenciales" data-category="residenciales" aria-label="Ver obras Residenciales">
-        <img src="assets/cat-residenciales.jpg" alt="Residenciales" class="specialty-bg-img">
+        <img src="assets/residencia-deck-atardecer.jpg" alt="Residenciales" class="specialty-bg-img">
         <div class="specialty-overlay"></div>
         <div class="specialty-content">
           <span class="specialty-eyebrow">Diseño Contemporáneo</span>
@@ -169,7 +193,7 @@
   <section class="services-vertical-section" id="que-hacemos">
     <div class="container">
       <div class="services-intro-block">
-        <span class="section-tag">• OFERTA INTEGRAL DE SERVICIOS</span>
+        <span class="section-tag">OFERTA INTEGRAL DE SERVICIOS</span>
         <h2 class="services-intro-title">
           Acompañamos a nuestros clientes en cada etapa del desarrollo a través de una oferta integral de servicios:
         </h2>
@@ -262,7 +286,7 @@
           </div>
           <div class="vertical-panel-body">
             <div class="vertical-panel-media">
-              <img src="assets/service-interiorismo.jpg" alt="Interiorismo y Confort Espacial en Salud" class="vertical-panel-img">
+              <img src="assets/clinica-recepcion-wellness.jpg" alt="Interiorismo y Confort Espacial en Salud" class="vertical-panel-img">
             </div>
             <div class="vertical-panel-content">
               <span class="vertical-panel-badge">04. Calidez & Humanización</span>
@@ -292,7 +316,7 @@
 
       <div class="contact-grid">
         <div class="contact-info">
-          <span class="section-tag">• CONTACTO DIRECTO</span>
+          <span class="section-tag">CONTACTO DIRECTO</span>
           <h2 class="section-title">Iniciemos una conversación sobre su próximo proyecto.</h2>
           <p class="section-subtitle">
             Coordinamos consultas técnicas y asesoramiento en toda la República Argentina.
@@ -575,8 +599,8 @@
             <div class="form-group">
               <label class="form-label" for="newProjCategory">Categoría / Tipología *</label>
               <select id="newProjCategory" class="form-select" required>
-                <option value="hospitalaria">Arquitectura Sanitaria / Hospitalaria</option>
-                <option value="habitacional">Arquitectura Habitacional / Residencial</option>
+                <option value="salud">Arquitectura Para la Salud</option>
+                <option value="residenciales">Obras y Proyectos Residenciales</option>
               </select>
             </div>
             <div class="form-group">
@@ -596,17 +620,62 @@
             </div>
           </div>
 
+          <!-- BOTÓN 1: IMAGEN DE PORTADA DE LA OBRA (1 SOLA IMAGEN) -->
           <div class="form-group">
-            <label class="form-label" for="presetImageSelector">Elegir Preset Fotográfico o ingresar URL</label>
-            <select id="presetImageSelector" class="form-select" style="margin-bottom: 0.5rem;">
-              <option value="">-- Seleccionar imagen de referencia arquitectónica --</option>
-              <option value="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80">Hospital / Clínica Moderna (Fachada Vidriada)</option>
-              <option value="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80">Pabellón Médico Quirúrgico / Interior Aséptico</option>
-              <option value="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80">Centro Pediátrico / Materno</option>
-              <option value="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80">Residencia Contemporánea Hormigón</option>
-              <option value="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80">Complejo Residencial Sostenible</option>
-            </select>
-            <input type="url" id="newProjImage" class="form-input" placeholder="https://ejemplo.com/foto-proyecto.jpg" value="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80" required>
+            <label class="form-label">
+              <span>Imagen de Portada de la Obra *</span>
+              <span class="form-label-hint">(1 sola imagen principal)</span>
+            </label>
+            <div class="upload-dropzone" id="coverDropzone">
+              <input type="file" id="coverFileInput" accept="image/*" style="display: none;">
+              <div class="upload-dropzone-empty" id="coverEmptyState">
+                <div class="upload-icon-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <div class="upload-text">
+                  <span class="upload-title">Arrastre aquí la imagen de portada</span>
+                  <span class="upload-subtitle">o haga clic en el botón para seleccionarla desde su dispositivo</span>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnSelectCover">
+                  Seleccionar Imagen de Portada
+                </button>
+              </div>
+              <div class="upload-preview-cover" id="coverPreviewWrap" style="display: none;">
+                <img id="coverPreviewImg" src="" alt="Portada de la obra">
+                <div class="upload-preview-overlay">
+                  <span class="preview-filename" id="coverFileName">portada.jpg</span>
+                  <button type="button" class="btn-remove-preview" id="btnRemoveCover" title="Cambiar o eliminar portada">✕</button>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="newProjImage" required>
+          </div>
+
+          <!-- BOTÓN 2: RESTO DE LAS IMÁGENES / GALERÍA (MÁXIMO 10 IMÁGENES) -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+              <label class="form-label" style="margin-bottom: 0;">
+                <span>Imágenes Adicionales de la Obra</span>
+                <span class="form-label-hint">(renders, detalles, interiores - máx. 10)</span>
+              </label>
+              <span class="upload-counter" id="galleryCounter">0 / 10 imágenes</span>
+            </div>
+            <div class="upload-dropzone" id="galleryDropzone">
+              <input type="file" id="galleryFileInput" accept="image/*" multiple style="display: none;">
+              <div class="upload-dropzone-empty" id="galleryEmptyState">
+                <div class="upload-icon-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="upload-text">
+                  <span class="upload-title">Arrastre aquí hasta 10 imágenes adicionales</span>
+                  <span class="upload-subtitle">o haga clic en el botón para cargar fotos desde su dispositivo</span>
+                </div>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnSelectGallery">
+                  Cargar Imágenes de la Obra
+                </button>
+              </div>
+              <div class="gallery-previews-grid" id="galleryPreviewsGrid" style="display: none;"></div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -643,7 +712,7 @@
     <div class="admin-session-actions">
       <button class="btn btn-primary btn-sm" id="adminBarAddBtn" title="Cargar nueva obra al catálogo">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        <span>+ Cargar Obra</span>
+        <span>Cargar Obra</span>
       </button>
       <button class="btn btn-secondary btn-sm" id="adminBarLogoutBtn" title="Cerrar sesión y ocultar herramientas de administración">
         Cerrar Sesión
