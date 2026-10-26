@@ -1057,7 +1057,10 @@ function initPhotoCover() {
 
     if (isInitial) {
       if (bgA) {
-        bgA.style.backgroundImage = `url('${photo.url}')`;
+        const currentBg = bgA.style.backgroundImage;
+        if (!currentBg || currentBg === 'none' || currentBg.includes('""')) {
+          bgA.style.backgroundImage = `url('${photo.url}')`;
+        }
         bgA.classList.add('active');
       } else if (fallbackBg) {
         fallbackBg.style.backgroundImage = `url('${photo.url}')`;
@@ -1084,6 +1087,17 @@ function initPhotoCover() {
           fallbackBg.style.backgroundImage = `url('${photo.url}')`;
           fallbackBg.style.opacity = '1';
         }, 120);
+      }
+    };
+    preloader.onerror = () => {
+      console.warn("No se pudo cargar la imagen de portada:", photo.url);
+      if (bgA && bgB) {
+        const incoming = activeIsA ? bgB : bgA;
+        const outgoing = activeIsA ? bgA : bgB;
+        incoming.style.backgroundImage = "url('assets/siss-hero.jpg')";
+        incoming.classList.add('active');
+        outgoing.classList.remove('active');
+        activeIsA = !activeIsA;
       }
     };
   }
