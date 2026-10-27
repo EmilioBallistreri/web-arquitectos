@@ -25,8 +25,8 @@
   --border-subtle: #ECEEF2;
   --border-dark: #2D333B;
 
-  /* Tipografías: Únicamente 2 familias tipográficas en toda la web */
-  --font-heading: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Tipografías: Plus Jakarta Sans en toda la web para una estética arquitectónica moderna, sobria y limpia */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Elevaciones & Sombras */
@@ -111,7 +111,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
 }
 
@@ -3564,10 +3564,93 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-/* 4. CATÁLOGO DE OBRAS (PÁGINA 4) */
+/* 4. CATÁLOGO DE OBRAS (TABLERO DIRECTO Y MINIMALISTA A PANTALLA COMPLETA) */
 .projects-catalog-wrap {
-  padding: 4.5rem 0 6rem;
+  padding-top: calc(var(--header-height, 80px) + 2.5rem);
+  padding-bottom: 0;
+  background: #ffffff;
+  min-height: calc(100vh - 200px);
+}
+.catalog-header-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.catalog-fullwidth-wrap {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #0b0f14;
+}
+.catalog-minimal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.catalog-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+.catalog-main-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.15;
+}
+.catalog-count-pill {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+.catalog-switch-container {
+  display: flex;
+  align-items: center;
+}
+.catalog-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 0.6rem 1.35rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.catalog-switch-btn:hover {
+  color: #0f172a;
+  border-color: #0f172a;
   background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.catalog-switch-btn svg {
+  transition: transform var(--transition-fast);
+}
+.catalog-switch-btn:hover svg {
+  transform: translateX(3px);
+}
+.catalog-switch-btn[data-switch-to="salud"]:hover svg {
+  transform: translateX(-3px);
 }
 .catalog-top-bar {
   display: flex;
@@ -3620,33 +3703,42 @@ h1, h2, h3, h4, h5, h6 {
 .projects-grid-editorial {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 2px;
+  background: #0b0f14;
 }
 .project-card-editorial {
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: none;
   background: #0b0f14;
+  border: none;
+  position: relative;
+  transition: opacity 0.3s ease;
 }
 .project-card-editorial:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16);
+  transform: none;
+  box-shadow: none;
+  opacity: 0.95;
 }
 .project-cover-wrap {
   position: relative;
   aspect-ratio: 16 / 10;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 .project-cover-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-card-editorial:hover .project-cover-img {
-  transform: scale(1.05);
+  transform: scale(1.035);
 }
 .project-cover-gradient {
   position: absolute;
@@ -3654,7 +3746,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(10, 15, 22, 0.88) 0%, rgba(10, 15, 22, 0.2) 40%, transparent 100%);
+  background: linear-gradient(to top, rgba(10, 15, 22, 0.82) 0%, rgba(10, 15, 22, 0.2) 35%, transparent 65%);
   transition: opacity 0.3s ease;
 }
 .project-cover-info {
@@ -3662,16 +3754,17 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 2.25rem 2rem 2rem;
+  padding: 1.35rem 1.75rem 1.25rem;
   z-index: 2;
   color: #fff;
 }
 .project-cover-title {
   font-family: var(--font-heading);
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.25;
+  font-size: clamp(0.92rem, 1.15vw, 1.08rem);
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   margin-bottom: 0;
   transition: color var(--transition-fast);
 }
@@ -4050,7 +4143,8 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, rgba(10, 15, 22, 0.92) 0%, rgba(10, 15, 22, 0.82) 50%, rgba(10, 15, 22, 0.6) 100%);
+  background: linear-gradient(135deg, rgba(11, 20, 30, 0.65) 0%, rgba(15, 23, 42, 0.45) 50%, rgba(11, 20, 30, 0.6) 100%);
+  backdrop-filter: blur(1px);
 }
 .wellness-container {
   position: relative;
@@ -4202,20 +4296,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 .wellness-pillar-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.35rem;
-  background: rgba(15, 23, 42, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-md);
-  padding: 1.35rem 1.6rem;
+  padding: 1.25rem 1.6rem;
   transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
 }
 .wellness-pillar-row:hover {
   transform: translateX(6px);
-  border-color: rgba(79, 209, 197, 0.4);
-  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(79, 209, 197, 0.45);
+  background: rgba(15, 23, 42, 0.82);
 }
 .wellness-pillar-badge {
   flex-shrink: 0;
@@ -4242,6 +4336,18 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff;
   margin-bottom: 0.35rem;
   line-height: 1.3;
+}
+.wellness-pillar-text {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  line-height: 1.55;
+  margin: 0;
+}
+.wellness-pillar-text strong {
+  color: #ffffff;
+  font-weight: 700;
 }
 .wellness-pillar-desc {
   font-size: 0.9rem;
@@ -4732,7 +4838,8 @@ h1, h2, h3, h4, h5, h6 {
     height: 320px;
   }
   .projects-grid-editorial {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
   }
   .vertical-accordion {
     flex-direction: column;
@@ -4771,6 +4878,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 @media (max-width: 640px) {
+  .projects-grid-editorial {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
   .architects-duo-frame {
     grid-template-columns: 1fr;
   }
@@ -4832,11 +4943,11 @@ h1, h2, h3, h4, h5, h6 {
 .nosotros-hero-title {
   font-family: var(--font-heading);
   font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.15;
   color: #ffffff;
   margin-bottom: 1.25rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 .nosotros-hero-subtitle {
   font-size: clamp(1.1rem, 1.8vw, 1.35rem);
@@ -4879,7 +4990,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Socios Titulares */
 .nosotros-team-section {
-  padding: 5.5rem 0;
+  padding: 4.5rem 0 5.5rem;
   background: #f8fafc;
   border-bottom: 1px solid var(--border-color);
 }
@@ -5009,10 +5120,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 .nosotros-cta-title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 800;
+  font-size: clamp(1.85rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
   color: #ffffff;
-  margin-bottom: 1rem;
+  margin-bottom: 2.25rem;
 }
 .nosotros-cta-desc {
   font-size: 1.15rem;

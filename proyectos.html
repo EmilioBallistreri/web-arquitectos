@@ -80,120 +80,44 @@
   </header>
 
   <!-- ==========================================================================
-       HERO DE LA PÁGINA PROYECTOS
+       CATÁLOGO MINIMALISTA DE OBRAS (TABLERO DIRECTO A PANTALLA COMPLETA)
        ========================================================================== -->
-  <section class="nosotros-page-hero">
-    <div class="nosotros-hero-backdrop"></div>
-    <div class="container">
-      <div class="nosotros-hero-content">
-        <div class="nosotros-breadcrumbs">
-          <a href="index.html">Inicio</a>
-          <span>/</span>
-          <a href="proyectos.html">Proyectos</a>
-          <span>/</span>
-          <span id="projectsHeroBreadcrumbCategory" style="color: #4fd1c5;">Arquitectura Para la Salud</span>
+  <main class="projects-catalog-wrap" id="catalogoObras">
+    <!-- Barra minimalista superior contenida: Título de catálogo + Botón tranqui para cambiar -->
+    <div class="catalog-header-container">
+      <header class="catalog-minimal-bar">
+        <div class="catalog-title-group">
+          <h1 class="catalog-main-heading" id="catalogCurrentTitle">Arquitectura Para la Salud</h1>
+          <span class="catalog-count-pill" id="catalogCountPill"></span>
         </div>
-        <h1 class="nosotros-hero-title">Obras y Proyectos</h1>
-        <p class="nosotros-hero-subtitle">
-          Catálogo exclusivo de arquitectura sanitaria de alta complejidad y residencias contemporáneas diseñadas por Manestar + Avila.
-        </p>
-      </div>
+
+        <!-- Botón muy tranqui para alternar entre catálogo de salud y residenciales -->
+        <div class="catalog-switch-container">
+          <button type="button" class="catalog-switch-btn" id="btnToggleCatalog" data-switch-to="residenciales" aria-label="Cambiar a Obras Residenciales">
+            <span id="btnToggleCatalogText">Ver Obras Residenciales</span>
+            <svg id="btnToggleCatalogIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </header>
     </div>
-  </section>
 
-  <!-- ==========================================================================
-       CATÁLOGO DE OBRAS CON SECCIONES APARTES Y SELECTOR SUPERIOR
-       ========================================================================== -->
-  <section class="projects-catalog-wrap" id="catalogoObras" style="padding: 4.5rem 0 6.5rem;">
-    <div class="container">
-      <!-- SELECTOR PRINCIPAL DE SECCIONES APARTES EN LA PARTE SUPERIOR -->
-      <div class="projects-dual-section-nav" id="projectsSectionNav">
-        <div class="projects-dual-nav-header">
-          <span class="section-tag">SELECCIONE LA SECCIÓN</span>
-          <h2 class="projects-dual-nav-title">Obras y Proyectos del Estudio</h2>
-          <p class="projects-dual-nav-sub">Nuestras obras están divididas en dos secciones independientes. Elija a continuación la especialidad que desea explorar:</p>
-        </div>
-
-        <div class="projects-dual-nav-grid">
-          <button type="button" class="dual-section-btn active" id="btnSectionSalud" data-category="salud" aria-pressed="true">
-            <div class="dual-btn-badge">01. ESPECIALIDAD PRINCIPAL</div>
-            <div class="dual-btn-content">
-              <div class="dual-btn-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <div class="dual-btn-text">
-                <span class="dual-btn-title">ARQUITECTURA PARA LA SALUD</span>
-                <span class="dual-btn-desc">Infraestructura hospitalaria, diagnóstico por imágenes y centros médicos</span>
-              </div>
-            </div>
-            <div class="dual-btn-status-indicator">
-              <span class="status-dot"></span>
-              <span class="status-label">Sección activa</span>
-            </div>
-          </button>
-
-          <button type="button" class="dual-section-btn" id="btnSectionResidenciales" data-category="residenciales" aria-pressed="false">
-            <div class="dual-btn-badge">02. DISEÑO CONTEMPORÁNEO</div>
-            <div class="dual-btn-content">
-              <div class="dual-btn-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-              </div>
-              <div class="dual-btn-text">
-                <span class="dual-btn-title">OBRAS Y PROYECTOS RESIDENCIALES</span>
-                <span class="dual-btn-desc">Viviendas unifamiliares, soluciones bioclimáticas y arquitectura a medida</span>
-              </div>
-            </div>
-            <div class="dual-btn-status-indicator">
-              <span class="status-dot"></span>
-              <span class="status-label">Sección activa</span>
-            </div>
-          </button>
-        </div>
-      </div>
-
+    <!-- Tablero de obras a pantalla completa (Full Bleed, sin calles blancas) -->
+    <div class="catalog-fullwidth-wrap">
       <!-- SUBSECCIÓN 1: ARQUITECTURA PARA LA SALUD -->
       <section class="catalog-subsection" id="subseccionSalud">
-        <div class="subsection-banner">
-          <div class="subsection-badge-row">
-            <span class="subsection-pill-tag">01. ESPECIALIDAD PRINCIPAL</span>
-          </div>
-          <h2 class="subsection-main-title">ARQUITECTURA PARA LA SALUD</h2>
-          <p class="subsection-lead-text">
-            Infraestructura hospitalaria, diagnóstico por imágenes de alta complejidad, quirófanos y centros médicos diseñados bajo normativas sanitarias y estándares de bienestar Wellness.
-          </p>
-        </div>
-        <!-- Grilla de Obras de Salud -->
         <div class="projects-grid-editorial" id="projectsGridSalud">
           <!-- Inyectado dinámicamente por JS -->
         </div>
       </section>
 
-      <!-- DIVISOR EDITORIAL ENTRE SUBSECCIONES -->
-      <div class="subsections-divider" id="subsectionsDivider">
-        <span class="divider-line"></span>
-        <span class="divider-mark">✦</span>
-        <span class="divider-line"></span>
-      </div>
-
       <!-- SUBSECCIÓN 2: OBRAS Y PROYECTOS RESIDENCIALES -->
-      <section class="catalog-subsection" id="subseccionResidenciales">
-        <div class="subsection-banner">
-          <div class="subsection-badge-row">
-            <span class="subsection-pill-tag">02. DISEÑO CONTEMPORÁNEO</span>
-          </div>
-          <h2 class="subsection-main-title">OBRAS Y PROYECTOS RESIDENCIALES</h2>
-          <p class="subsection-lead-text">
-            Viviendas unifamiliares contemporáneas de diseño personalizado, soluciones bioclimáticas, fluidez espacial y honestidad constructiva.
-          </p>
-        </div>
-        <!-- Grilla de Obras Residenciales -->
+      <section class="catalog-subsection" id="subseccionResidenciales" style="display: none;">
         <div class="projects-grid-editorial" id="projectsGridResidenciales">
           <!-- Inyectado dinámicamente por JS -->
         </div>
       </section>
-
     </div>
-  </section>
+  </main>
 
   <!-- ==========================================================================
        CALL TO ACTION
@@ -203,9 +127,6 @@
       <div class="nosotros-cta-content">
         <span class="section-tag">ASESORAMIENTO ESPECIALIZADO</span>
         <h2 class="nosotros-cta-title">¿Desea proyectar una obra médica o residencial?</h2>
-        <p class="nosotros-cta-desc">
-          Nuestro equipo multidisciplinario combina modelado BIM, normativas sanitarias y arquitectura de vanguardia para su institución o vivienda unifamiliar.
-        </p>
         <div class="nosotros-cta-btns">
           <a href="index.html#contacto" class="btn btn-primary">
             Contactar al Estudio

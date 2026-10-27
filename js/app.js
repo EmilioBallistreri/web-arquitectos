@@ -134,25 +134,14 @@ function initSpecialtyButtons() {
     });
   }
 
-  // SELECTOR SUPERIOR DE SECCIONES APARTES EN proyectos.html
-  const btnSectionSalud = document.getElementById('btnSectionSalud');
-  const btnSectionResidenciales = document.getElementById('btnSectionResidenciales');
-
-  if (btnSectionSalud) {
-    btnSectionSalud.addEventListener('click', () => {
-      setSpecialtyCategory('salud', true);
+  // BOTÓN TRANQUI PARA ALTERNAR ENTRE CATÁLOGOS EN proyectos.html
+  const btnToggleCatalog = document.getElementById('btnToggleCatalog');
+  if (btnToggleCatalog) {
+    btnToggleCatalog.addEventListener('click', () => {
+      const targetCat = btnToggleCatalog.dataset.switchTo || (activeFilter === 'salud' ? 'residenciales' : 'salud');
+      setSpecialtyCategory(targetCat, true);
       if (window.history && window.history.pushState) {
-        const newUrl = window.location.pathname + '?categoria=salud';
-        window.history.pushState({ path: newUrl }, '', newUrl);
-      }
-    });
-  }
-
-  if (btnSectionResidenciales) {
-    btnSectionResidenciales.addEventListener('click', () => {
-      setSpecialtyCategory('residenciales', true);
-      if (window.history && window.history.pushState) {
-        const newUrl = window.location.pathname + '?categoria=residenciales';
+        const newUrl = window.location.pathname + '?categoria=' + targetCat;
         window.history.pushState({ path: newUrl }, '', newUrl);
       }
     });
@@ -172,30 +161,42 @@ function setSpecialtyCategory(cat, shouldScroll = false) {
   if (btnSalud) btnSalud.classList.toggle('active', cat === 'salud');
   if (btnResidenciales) btnResidenciales.classList.toggle('active', cat === 'residenciales');
 
-  // Actualizar selector de secciones apartes en la parte superior de proyectos.html
-  const btnSectionSalud = document.getElementById('btnSectionSalud');
-  const btnSectionResidenciales = document.getElementById('btnSectionResidenciales');
-  if (btnSectionSalud) {
-    btnSectionSalud.classList.toggle('active', cat === 'salud');
-    btnSectionSalud.setAttribute('aria-pressed', cat === 'salud' ? 'true' : 'false');
-  }
-  if (btnSectionResidenciales) {
-    btnSectionResidenciales.classList.toggle('active', cat === 'residenciales');
-    btnSectionResidenciales.setAttribute('aria-pressed', cat === 'residenciales' ? 'true' : 'false');
+  // Actualizar barra minimalista y botón tranqui
+  const currentTitle = document.getElementById('catalogCurrentTitle');
+  const btnToggleCatalog = document.getElementById('btnToggleCatalog');
+  const btnToggleText = document.getElementById('btnToggleCatalogText');
+  const btnToggleIcon = document.getElementById('btnToggleCatalogIcon');
+
+  if (currentTitle) {
+    currentTitle.textContent = cat === 'residenciales' 
+      ? 'Obras Residenciales' 
+      : 'Arquitectura Para la Salud';
   }
 
-  // Actualizar breadcrumb superior si existe
-  const breadcrumbCat = document.getElementById('projectsHeroBreadcrumbCategory');
-  if (breadcrumbCat) {
-    breadcrumbCat.textContent = cat === 'residenciales' ? 'Obras y Proyectos Residenciales' : 'Arquitectura Para la Salud';
+  if (btnToggleCatalog && btnToggleText) {
+    if (cat === 'salud') {
+      btnToggleCatalog.dataset.switchTo = 'residenciales';
+      btnToggleCatalog.setAttribute('aria-label', 'Ver Obras Residenciales');
+      btnToggleText.textContent = 'Ver Obras Residenciales';
+      if (btnToggleIcon) {
+        btnToggleIcon.innerHTML = '<path d="M5 12h14M12 5l7 7-7 7"/>';
+      }
+    } else {
+      btnToggleCatalog.dataset.switchTo = 'salud';
+      btnToggleCatalog.setAttribute('aria-label', 'Ver Obras Hospitalarias');
+      btnToggleText.textContent = 'Ver Obras Hospitalarias';
+      if (btnToggleIcon) {
+        btnToggleIcon.innerHTML = '<path d="M19 12H5M12 19l-7-7 7-7"/>';
+      }
+    }
   }
 
   renderProjects();
 
   if (shouldScroll) {
-    const navSelector = document.getElementById('projectsSectionNav') || document.getElementById('catalogoObras');
-    if (navSelector) {
-      navSelector.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const catalogo = document.getElementById('catalogoObras');
+    if (catalogo) {
+      catalogo.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 }
@@ -255,6 +256,13 @@ function renderProjects() {
       gridResidenciales.innerHTML = residencialesProjects.length > 0
         ? residencialesProjects.map(createCardHtml).join('')
         : `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);"><p>No hay proyectos registrados en Obras Residenciales aún.</p></div>`;
+    }
+
+    // Actualizar píldora de conteo de obras en la cabecera minimalista
+    const countPill = document.getElementById('catalogCountPill');
+    if (countPill) {
+      const count = activeFilter === 'residenciales' ? residencialesProjects.length : saludProjects.length;
+      countPill.textContent = `${count} ${count === 1 ? 'obra' : 'obras'}`;
     }
 
     // MANEJO DE SECCIONES APARTES: Mostrar exclusivamente la sección seleccionada
