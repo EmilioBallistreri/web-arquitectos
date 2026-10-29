@@ -4539,10 +4539,10 @@ h1, h2, h3, h4, h5, h6 {
   color: #475569;
   line-height: 1.85;
 }
-.vertical-accordion-wrapper {
+.vertical-accordion-wrapper { width: 100%; max-width: 100%; margin: 2rem 0 0; padding: 0;
   margin-top: 2rem;
 }
-.vertical-accordion {
+.vertical-accordion { width: 100%;
   display: flex;
   height: 650px;
   min-height: 650px;
@@ -4626,7 +4626,7 @@ h1, h2, h3, h4, h5, h6 {
   object-position: center;
 }
 .vertical-panel-content {
-  padding: 2.25rem 2.5rem 2rem;
+  padding: 3rem 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -4841,7 +4841,7 @@ h1, h2, h3, h4, h5, h6 {
     grid-template-columns: repeat(2, 1fr);
     gap: 2px;
   }
-  .vertical-accordion {
+  .vertical-accordion { width: 100%;
     flex-direction: column;
     height: auto;
   }
